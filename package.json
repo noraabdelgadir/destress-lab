@@ -1,0 +1,24 @@
+{
+  "name": "assignment-3-nullbrains",
+  "version": "1.0.0",
+  "description": "## Files ### test-user.json - sample user data",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.16.3",
+    "mongoose": "^5.0.11"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/csc309-18s/assignment-3-nullbrains.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/csc309-18s/assignment-3-nullbrains/issues"
+  },
+  "homepage": "https://github.com/csc309-18s/assignment-3-nullbrains#readme"
+}
