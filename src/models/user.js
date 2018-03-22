@@ -22,7 +22,7 @@ const userSchema = new Schema({
     collection: 'users'
 });
 
-mongoose.connect('mongodb://localhost/theLab', (error) => {
+mongoose.connect('mongodb://nullbrainsTeam:welovedogs123@ds221609.mlab.com:21609/de-stress-lab-db', (error) => {
     if (error) console.log(error);
 
     console.log('Database connection successful.');
