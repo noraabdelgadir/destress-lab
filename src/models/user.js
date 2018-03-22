@@ -15,7 +15,7 @@ const userSchema = new Schema({
     breeds: {
         type: [String]
     },
-    stressrs: {
+    stressors: {
         type: [String]
     }
 }, {
