@@ -16,6 +16,10 @@ app.get('/', (req, res) => {
 // RESTful
 app.get('/users', users.findAll);
 
+app.get('/test-route', (req, res) => {
+	res.send('<h1>Test.</h1>');
+});
+
 app.listen(PORT, () => {
     console.log('Server listening on port ' + PORT);
 })
