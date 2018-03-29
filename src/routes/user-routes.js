@@ -12,3 +12,12 @@ exports.findAll = function findUsers (req, res) {
         }
     });
 }
+
+exports.create = function createUser (userData) {
+    User.create(newUser, (err, user) => {
+        if (err) throw err;
+        else {
+            return res.redirect('/users');
+        }
+    });
+}
