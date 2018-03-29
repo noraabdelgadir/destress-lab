@@ -1,7 +1,5 @@
 'use strict';
 
-import { auth } from "./pages";
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
@@ -15,7 +13,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/signup', (req, res) => {
-    res.send(auth);
+    res.sendFile('./pages/auth.html');
 })
 
 // RESTful
