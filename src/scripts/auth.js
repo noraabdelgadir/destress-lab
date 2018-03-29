@@ -13,7 +13,7 @@ $(document).ready(function () {
 
         if (pwd1 === pwd2) {
             $.ajax({
-                url: "http://localhost:3000/user",
+                url: "/user",
                 json: true,
                 data: {username: username, password: pwd1},
                 success: function(response) {
