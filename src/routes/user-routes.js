@@ -8,7 +8,7 @@ exports.findAll = function findUsers (req, res) {
         if (allUsers) {
             res.send('<h1>Users</h1><br>' + allUsers);
         } else {
-            res.send('No courses.');
+            res.send('No users.');
         }
     });
 }
@@ -26,7 +26,7 @@ exports.create = function createUser (req, res) {
     User.create(newUser, (err, user) => {
         if (err) throw err;
         else {
-            res.redirect('/users');
+            console.log("User " + req.body.username + " created.");
         }
     });
 }

@@ -9,18 +9,24 @@ const users = require('./routes/user-routes');
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/', (req, res) => {
-    res.send('<h1>Response.</h1>');
+    res.sendFile('./pages/home.html', {root: __dirname});
 });
 
 app.get('/signup', (req, res) => {
-    res.sendFile('./pages/auth.html', { root: __dirname });
+    res.sendFile('./pages/auth.html', {root: __dirname});
+});
+
+app.get('/games', (req, res) => {
+    // Check for session here
+    res.sendFile('./pages/games.html', {root: __dirname});
 })
 
 // RESTful
 app.get('/users', users.findAll);
 
 app.post('/user', (req, res) => {
-    users.create(req, res)
+    users.create(req, res);
+    res.send({redirect: '/games'});
 });
 
 app.listen(PORT, () => {

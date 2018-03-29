@@ -21,7 +21,10 @@
                     console.log('password: ' + pwd2);
 
                     if (pwd1 === pwd2) {
-                        $.post("/user", {username: username, password: pwd1}, function(data) {});
+                        $.post("/user", {username: username, password: pwd1}, (data, status) => {
+                            if (typeof data.redirect == 'string')
+                                window.location = data.redirect
+                        });
                     } else {
                         alert('Sign up unsuccessful.');
                     }
