@@ -19,7 +19,9 @@ app.get('/signup', (req, res) => {
 // RESTful
 app.get('/users', users.findAll);
 
-app.post('/user', users.create);
+app.post('/user', (req, res) => {
+    users.create(req, res)
+});
 
 app.listen(PORT, () => {
     console.log('Server listening on port ' + PORT);
