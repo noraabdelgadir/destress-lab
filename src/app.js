@@ -1,6 +1,6 @@
 'use strict';
 
-import auth from './pages';
+import { auth } from "./pages";
 
 const express = require('express');
 const bodyParser = require('body-parser');
