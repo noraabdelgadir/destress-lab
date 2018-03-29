@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/signup', (req, res) => {
-    res.sendFile('./pages/auth.html');
+    res.sendFile('./pages/auth.html', { root: __dirname });
 })
 
 // RESTful
