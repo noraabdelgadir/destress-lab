@@ -26,7 +26,7 @@ exports.create = function createUser (req, res) {
     User.create(newUser, (err, user) => {
         if (err) throw err;
         else {
-            return res.redirect('/users');
+            res.redirect('/users');
         }
     });
 }
