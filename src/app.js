@@ -57,15 +57,23 @@ app.post('/user', (req, res) => {
                 'stressors': [],
             }
 
-            User.create(newUser, (err, user) => {
+            User.findOne({'username': req.body.username}, (err, user) => {
                 if (err) throw err;
-                else {
-                    console.log("User " + req.body.username + " created.");
+                else if (user) {
+                    console.log('Username taken!');
+                    res.send({redirect: '/signup'});
+                } else {
+                    User.create(newUser, (err, user) => {
+                        if (err) throw err;
+                        else {
+                            console.log("User " + req.body.username + " created.");
+                            res.send({redirect: '/login'});
+                        }
+                    });
                 }
             });
         });
     }
-    res.send({redirect: '/login'});
 });
 
 app.post('/user/login', (req, res) => {
@@ -124,6 +132,10 @@ function checkAuth(req, res) {
 app.get('/games/auth', checkAuth, (req, res) => {
     res.sendFile('./pages/games.html', {root: __dirname});
 });
+
+app.put('/user/info', checkAuth, (req, res) => {
+
+})
 
 /*  Start server    */
 app.listen(PORT, () => {
