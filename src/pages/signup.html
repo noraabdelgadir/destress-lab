@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <title>Sign Up</title>
+        <!-- jQuery library -->
+        <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+        <!-- Bootstrap -->
+        <!-- Latest compiled and minified CSS -->
+        <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
+        <!-- Latest compiled JavaScript -->
+        <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+        <script type='text/javascript'>
+            $(document).ready(function () {
+                $('#signup-button').on('click', function () {
+                    var username = $('#signup-username').val();
+                    var pwd1 = $('#pwd').val();
+                    var pwd2 = $('#re-enter').val();
+
+                    // Log it, in Assignment 3, we will send it to the server instead
+                    console.log('username: ' + username);
+                    console.log('password: ' + pwd1);
+                    console.log('password: ' + pwd2);
+
+                    if (pwd1 === pwd2) {
+                        $.post("/user", {username: username, password: pwd1}, (data, status) => {
+                            if (typeof data.redirect == 'string')
+                                window.location = data.redirect
+                        });
+                    } else {
+                        alert('Sign up unsuccessful.');
+                    }
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div class='form-group'>
+            <label for='signup-username'>Username</label>
+            <input type='username' class='form-control' id='signup-username'>
+        </div>
+        <div class='form-group'>
+            <label for='pwd'>Password</label>
+            <input type='password' class='form-control' id='pwd'>
+        </div>
+        <div class='form-group'>
+            <label for='re-enter'>Re-enter Password</label>
+            <input type='password' class='form-control' id='re-enter'>
+        </div>
+        <button id='signup-button' type='button' class='btn btn-default' data-dismiss='modal'>Sign Up</button>
+    </body>
+</html>
