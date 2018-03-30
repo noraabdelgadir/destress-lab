@@ -46,7 +46,12 @@ $( document ).ready(function() {
   // When a breed is added, attach a listener to the remove icon
 
   $.ajax({
-    url: '/'
+    url: "/addBreed",
+    json: true,
+    data: {username: username, password: pwd1},
+    success: function(response) {
+        
+    }
   });
 
   $('#addbreed-modal #save-breed').on('click', function () {
