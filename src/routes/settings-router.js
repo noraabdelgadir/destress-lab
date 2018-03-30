@@ -70,7 +70,7 @@ exports.removeStressor = function removeStressor(req, res) {
 
 exports.changeUsername = function changeUsername(req, res) {
   var username = req.session.user.username;
-  var newUsername = req.body.username;
+  var newUsername = req.body.newUsername;
 
   User.findOne({username: username}, function(err, user) {
     if(err) throw err;
@@ -84,7 +84,7 @@ exports.changeUsername = function changeUsername(req, res) {
 
 exports.changePassword = function changePassword(req, res) {
   var username = req.session.user.username;
-  var newPassword = req.body.password;
+  var newPassword = req.body.newPwd;
 
   User.findOne({username: username}, function(err, user) {
     if(err) throw err;

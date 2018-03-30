@@ -26,6 +26,10 @@ app.post('/addStressor', settings.addStressor);
 
 app.post('/removeStressor', settings.removeStressor);
 
+app.post('/changeUsername', settings.removeStressor);
+
+app.post('/changePassword', settings.removeStressor);
+
 
 app.listen(PORT, () => {
     console.log('Server listening on port ' + PORT);
