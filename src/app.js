@@ -7,6 +7,8 @@ const PORT = process.env.PORT || 3000;
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const User = require('./models/user');
+const bcrypt = require('bcrypt');
+const salt = 10;
 
 /*  Middleware  */
 app.use(bodyParser.urlencoded({extended: false}));
@@ -19,7 +21,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-    res.sendFile('./pages/login.html', {root: __dirname})
+    res.sendFile('./pages/login.html', {root: __dirname});
 });
 
 app.get('/signup', (req, res) => {
@@ -46,51 +48,56 @@ app.get('/users', (req, res) => {
 
 app.post('/user', (req, res) => {
     if(req.body.username && req.body.password) {
-        var newUser = {
-            'username': req.body.username,
-            'password': req.body.password,
-            'breeds': [],
-            'stressors': [],
-        }
-    }
-    User.create(newUser, (err, user) => {
-        if (err) throw err;
-        else {
-            console.log("User " + req.body.username + " created.");
-        }
-    });
+        // Encrypt and store encrypted password
+        bcrypt.hash(req.body.password, salt, (err, hash) => {
+            var newUser = {
+                'username': req.body.username,
+                'password': hash,
+                'breeds': [],
+                'stressors': [],
+            }
 
-    res.send({redirect: '/games'});
+            User.create(newUser, (err, user) => {
+                if (err) throw err;
+                else {
+                    console.log("User " + req.body.username + " created.");
+                }
+            });
+        });
+    }
+    res.send({redirect: '/login'});
 });
 
 app.post('/user/login', (req, res) => {
     var username = req.body.username;
     var pwd = req.body.password;
 
-    var tryUser = {
-        'username': username,
-        'password': pwd
-    }
-
-    User.findOne(tryUser, (err, user) => {
+    User.findOne({'username': username}, (err, user) => {
         if (err) throw err;
-        else if (user && user.username === tryUser.username && user.password === tryUser.password){
-            console.log("User " + username + " logged in.");
-            req.session.user = {id: user._id, username: username};
-            res.send({redirect: '/games/auth'});
+        else if (user) {
+            console.log('user  exists');
+            // Compare plaintext password to its encrypted counterpart on DB
+            bcrypt.compare(pwd, user.password, (err, bcryptRes) => {
+                if (bcryptRes) {
+                    console.log("User " + username + " logged in.");
+                    req.session.user = {id: user._id, username: username};
+                    res.send({redirect: '/games/auth'});
+                } else {
+                    console.log('Username or password incorrect.');
+                }
+            });
         }
     });
 });
 
 app.get('/user/logout', (req, res) => {
-    console.log("Logging out.");
     req.session.destroy (function() {
         console.log("Logged out.");
         res.sendFile('./pages/home.html', {root: __dirname});
     });
 });
 
-app.delete('/user', (req, res) => {  // change to app.delete later
+app.delete('/user', (req, res) => {
     console.log('Removing user');
     User.remove({_id: req.session.user.id}, (err, data) => {
         if (err) throw err;
@@ -110,7 +117,7 @@ app.delete('/user', (req, res) => {  // change to app.delete later
 function checkAuth(req, res) {
     if (!req.session.user) {
         return res.status(401).send();
-    } 
+    }
     return res.status(200).send();
 }
 
