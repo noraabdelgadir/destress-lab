@@ -6,7 +6,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-const User = require('./models/user');
+const User = require('./src/models/user');
 const bcrypt = require('bcrypt');
 const salt = 10;
 
@@ -17,20 +17,20 @@ app.use(session({secret: 'Secret cookie!'}));
 
 /*  Page loading    */
 app.get('/', (req, res) => {
-    res.sendFile('./pages/home.html', {root: __dirname});
+    res.sendFile('./src/pages/home.html', {root: __dirname});
 });
 
 app.get('/login', (req, res) => {
-    res.sendFile('./pages/login.html', {root: __dirname});
+    res.sendFile('./src/pages/login.html', {root: __dirname});
 });
 
 app.get('/signup', (req, res) => {
-    res.sendFile('./pages/signup.html', {root: __dirname});
+    res.sendFile('./src/pages/signup.html', {root: __dirname});
 });
 
 app.get('/games', (req, res) => {
     // Check for session here
-    res.sendFile('./pages/games.html', {root: __dirname});
+    res.sendFile('./src/pages/games.html', {root: __dirname});
 });
 
 /*  RESTful User API    */
@@ -101,7 +101,7 @@ app.post('/user/login', (req, res) => {
 app.get('/user/logout', (req, res) => {
     req.session.destroy (function() {
         console.log("Logged out.");
-        res.sendFile('./pages/home.html', {root: __dirname});
+        res.sendFile('./src/pages/home.html', {root: __dirname});
     });
 });
 
@@ -130,7 +130,7 @@ function checkAuth(req, res) {
 }
 
 app.get('/games/auth', checkAuth, (req, res) => {
-    res.sendFile('./pages/games.html', {root: __dirname});
+    res.sendFile('./src/pages/games.html', {root: __dirname});
 });
 
 app.put('/user/info', checkAuth, (req, res) => {
