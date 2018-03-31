@@ -173,7 +173,7 @@ app.post('/user/addStressor', (req, res) => {
   });
 });
 
-app.post('/removeStressor', (req, res) => {
+app.post('/user/removeStressor', (req, res) => {
   var username = req.session.user.username;
   var stressors = req.session.user.stressors;
   var index = stressors.indexOf(req.body.toRemove);
