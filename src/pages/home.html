@@ -14,7 +14,7 @@
     <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
 
     <!-- <script type="application/javascript" src='../assets/scripts/index.js'></script> -->
-    <link rel='stylesheet' type='text/html' href='../assets/css/index.css'>
+    <!-- <link rel='stylesheet' type='text/css' href='../assets/css/index.css'> -->
 
   </head>
   <body>
@@ -31,6 +31,103 @@
         </ul>
       </div>
     </nav>
+
+    <style>
+      .navbar {
+        margin: 0px 20px;
+      }
+
+      h1 {
+        font-family: sans-serif;
+        position: relative;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .container {
+        display: flex;
+        justify-content: center;
+      }
+
+      #game-panel-container {
+        overflow: visible;
+        display: flex;
+      }
+
+      #main-screen {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+      }
+
+      #game-view {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+      }
+
+      .modal {
+        position: absolute;
+        top: 20%;
+        left: 10%;
+        width: 80%;
+        height: 90%;
+      }
+
+      .select-panel:hover {
+        transition: 0.3s;
+        box-shadow: 0 10px 10px 10px #6b217a8a;
+      }
+
+      .col-centered {
+        float: none;
+        margin: auto;
+        margin-right: 22.5%;
+      }
+
+      #instructions {
+        position: absolute;
+        color: white;
+        bottom: 8em;
+        left: 15em;
+      }
+
+      #music-cred {
+        font-weight: 700;
+        position: absolute;
+        bottom: 2em;
+        left: 1em;
+      }
+
+      #new-breed {
+        width: 50%;
+        height: 35px;
+        position: absolute;
+        right: 1em;
+        bottom: 0em;
+        text-align: center;
+      }
+
+      .scrollable {
+        max-height: 200px;
+        overflow-y: auto;
+      }
+
+      .modal-body scrollable {
+        max-height: 50%;
+        overflow-y: auto;
+      }
+
+    </style>
 
     <script type='text/javascript'>
       var presetUser = 'DogLovingHuman';
@@ -147,7 +244,6 @@
     var login = "<li id='login'><a href='#' data-toggle='modal' data-target='#login-modal'>Log In</a></li>";
     var signup = "<li id='signup'><a href='#' data-toggle='modal' data-target='#signup-modal'>Sign Up</a></li>";
     $('#pop-game').on('click', function () {
-      console.log("clicked");
         $('#navbar-contents').append(backButton);
         $('#login').remove();
         $('#signup').remove();
@@ -157,7 +253,6 @@
         document.getElementById('jazz-music').play();
     });
     $('#shooter-game').on('click', function () {
-      console.log("clicked");
         $('#navbar-contents').append(backButton);
         $('#login').remove();
         $('#signup').remove();

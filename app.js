@@ -62,7 +62,7 @@ app.get('/music/bensound-jazzcomedy.mp3', (req, res) => {
 });
 
 app.get('/music/bensound-thejazzpiano.mp3', (req, res) => {
-    ms.pipe(req, res, './music/bensound-thejazzpiano.mp3');
+    ms.pipe(req, res, './src/assets/music/bensound-thejazzpiano.mp3');
 });
 
 

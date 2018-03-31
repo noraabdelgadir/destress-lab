@@ -1,4 +1,5 @@
 <html>
+  <head>
   <link rel='stylesheet' type= "text/html" href='assets/css/game.css'>
   <style>
   html {
@@ -42,22 +43,30 @@
   	left: 0;
   }
   </style>
+  <!-- jQuery library -->
   <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
-  <h1>Stress Shooting</h1>
-  <nav class='navbar navbar-light bg-light'>
-    <div class='nav navbar-nav navbar-right'>
-      <ul id='navbar-contents' class='nav navbar-nav'>
-        <li id='login'><a href='#' data-toggle='modal' data-target='#login-modal'>Log In</a></li>
-        <li id='signup'><a href='#' data-toggle='modal' data-target='#signup-modal'>Sign Up</a></li>
-      </ul>
-    </div>
-  </nav>
+  <!-- Bootstrap -->
+  <!-- Latest compiled and minified CSS -->
+  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
+  <!-- Latest compiled JavaScript -->
+  <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+
+
+    <audio controls style= "display: none" autoplay>
+        <source src="/music/bensound-thejazzpiano.mp3"></source>
+    </audio>
+    <h1>Stress Shooting</h1>
+  </head>
+
   <div id='container' class='col-lg-8 col-centered'>
       <canvas class='canvas' id='background' width='1270' height='650'></canvas>
       <canvas class='canvas col-lg-6 col-lg-offset-4' id='game' width='500' height='500'></canvas>
   </div>
   <a id='instructions' href='#' data-toggle='popover' title='Instructions'
-      data-content="Click on the game canvas to start. Use arrow keys to move and space to shoot. If you don't want to use the bullets, you can simply attack the stresses with the character.">Instructions</a>
+      data-content="Click on the game canvas to start.
+      Use arrow keys to move and space to shoot.
+      If you don't want to use the bullets,
+      you can simply attack the stresses with the character.">Instructions</a>
   <script type = "text/JavaScript">
   "use strict";
 
