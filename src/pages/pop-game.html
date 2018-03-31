@@ -2,6 +2,9 @@
     <head>
         <meta name="viewport" content="user-scalable=no">
         <title>Pop!</title>
+        <audio controls style="display: none" autoplay>
+            <source src="http://127.0.0.1:5000/music/bensound-jazzcomedy.mp3"></source>
+        </audio>
     </head>
     <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
     <script type="text/css" src="../scripts/pop-game.css"></script>
@@ -16,6 +19,7 @@
         var c = null;
         var ctx = null;
         var gradient = null;
+        var audio = null;
 
         $(window).on('click', function(e) {
             bubbleSpawner.handlePop(e.pageX, e.pageY);
@@ -117,5 +121,6 @@
         }
         setup();
         gameLoop();
+        
     </script>
 </html>

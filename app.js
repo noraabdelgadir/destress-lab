@@ -9,6 +9,7 @@ const session = require('express-session');
 const User = require('./src/models/user');
 const bcrypt = require('bcrypt');
 const salt = 10;
+const ms = require('mediaserver');
 
 /*  Middleware  */
 app.use(bodyParser.urlencoded({extended: false}));
@@ -35,6 +36,11 @@ app.get('/games', (req, res) => {
 
 app.get('/game/pop', (req, res) => {
     res.sendFile('./src/pages/pop-game.html', {root: __dirname});
+});
+
+/*  Game API    */
+app.get('/music/bensound-jazzcomedy.mp3', (req, res) => {
+    ms.pipe(req, res, './music/bensound-jazzcomedy.mp3');
 });
 
 /*  RESTful User API    */
