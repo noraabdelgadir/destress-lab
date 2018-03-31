@@ -17,7 +17,7 @@ app.use(session({secret: 'Secret cookie!'}));
 
 /*  Page loading    */
 app.get('/', (req, res) => {
-    res.sendFile('./src/pages/home.html', {root: __dirname});
+    res.sendFile('./src/pages/main.html', {root: __dirname});
 });
 
 app.get('/login', (req, res) => {
@@ -121,6 +121,100 @@ app.delete('/user', (req, res) => {
             });
         }
     });
+});
+
+/* User settings */
+
+app.post('/user/addBreed', (req, res) => {
+  var username = req.session.user.username;
+  var breeds = req.session.user.breeds;
+  console.log(username);
+  breeds.push(req.body.newBreed);
+
+  User.findOne({username: username}, function(err, user) {
+    if(err) throw err;
+    user.breeds = breeds;
+
+    user.save(function(err) {
+      if(err) throw err;
+    });
+  });
+});
+
+app.post('/user/removeBreed', (req, res) => {
+  var username = req.session.user.username;
+  var breeds = req.session.user.breeds;
+  var index = breeds.indexOf(req.body.toRemove);
+  breeds.splice(index, 1);
+
+  User.findOne({username: username}, function(err, user) {
+    if(err) throw err;
+    user.breeds = breeds;
+
+    user.save(function(err) {
+      if(err) throw err;
+    });
+  });
+});
+
+app.post('/user/addStressor', (req, res) => {
+  var username = req.session.user.username;
+  var stressors = req.session.user.stressors;
+  console.log(username);
+  stressors.push(req.body.newStressor);
+
+  User.findOne({username: username}, function(err, user) {
+    if(err) throw err;
+    user.stressors = stressors;
+
+    user.save(function(err) {
+      if(err) throw err;
+    });
+  });
+});
+
+app.post('/removeStressor', (req, res) => {
+  var username = req.session.user.username;
+  var stressors = req.session.user.stressors;
+  var index = stressors.indexOf(req.body.toRemove);
+  stressors.splice(index, 1);
+
+  User.findOne({username: username}, function(err, user) {
+    if(err) throw err;
+    user.stressors = stressors;
+
+    user.save(function(err) {
+      if(err) throw err;
+    });
+  });
+});
+
+app.post('/user/changeUsername', (req, res) => {
+  var username = req.session.user.username;
+  var newUsername = req.body.newUsername;
+
+  User.findOne({username: username}, function(err, user) {
+    if(err) throw err;
+    user.username = newUsername;
+
+    user.save(function(err) {
+      if(err) throw err;
+    });
+  });
+});
+
+app.post('/user/changePassword', (req, res) => {
+  var username = req.session.user.username;
+  var newPassword = req.body.newPwd;
+
+  User.findOne({username: username}, function(err, user) {
+    if(err) throw err;
+    user.password = newPassword;
+
+    user.save(function(err) {
+      if(err) throw err;
+    });
+  });
 });
 
 /*  Protected pages */
