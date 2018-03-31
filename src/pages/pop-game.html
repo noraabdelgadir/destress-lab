@@ -41,21 +41,24 @@
             update: () => {
                 if (
                     bubbleSpawner.spawnCounter === 0
-                    && bubbleSpawner.bubbles.length < 10
+                    && bubbleSpawner.bubbles.length < 8
                 ){
-                    var pr = 100; //potential radius of new bubble
+                    var pr = screenWidth / 8; //potential radius of new bubble
                     var variance = 30;
                     bubbleSpawner.spawn(
                         pr + Math.random() * (screenWidth - 2 * pr),
                         pr + Math.random() * (screenHeight - 2 * pr),
                         pr - variance + Math.random() * variance,
-                        Math.random() * 10,
-                        Math.random() * 10,
+                        Math.random() * 15,
+                        Math.random() * 15,
                         0
                     );
                     bubbleSpawner.spawnCounter = 20;
                 }
-                bubbleSpawner.spawnCounter -=1;
+                if (bubbleSpawner.spawnCounter <= 0)
+                    bubbleSpawner.spawnCounter = 20;
+                else
+                    bubbleSpawner.spawnCounter -=1;
                 for (var b in bubbleSpawner.bubbles) {
                     var bubble = bubbleSpawner.bubbles[b];
                     if (bubble.x + bubble.r > screenWidth || bubble.x - bubble.r < 0)
@@ -83,8 +86,7 @@
                         && bubble.y - bubble.r < y
                         && bubble.y + bubble.r > y
                     ){
-                        console.log("POP");
-                        bubbleSpawner.bubbles.pop(bubble);
+                        bubbleSpawner.bubbles.splice(b, 1);
                     }
                 }
             },
@@ -99,7 +101,6 @@
         }
 
         function setup () {
-            console.log('setup')
             c = document.getElementById('screen');
             ctx = c.getContext('2d');
             ctx.canvas.width = screenWidth;
