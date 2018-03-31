@@ -19,7 +19,7 @@
         var c = null;
         var ctx = null;
         var gradient = null;
-        var audio = null;
+        var dogs = []
 
         $(window).on('click', function(e) {
             bubbleSpawner.handlePop(e.pageX, e.pageY);
@@ -35,12 +35,9 @@
                     dx: dx,
                     dy: dy,
                     col: 'purple',
-                    img: img
+                    img: dogs[Math.floor(Math.random() * 10)]
                 }
                 bubbleSpawner.bubbles.push(newB);
-                ctx.beginPath();
-                ctx.arc(x, y, r, 0, 2 * Math.PI);
-                ctx.stroke();
             },
             update: () => {
                 if (
@@ -76,6 +73,18 @@
             },
             drawBubble: (b) => {
                 var bubble = bubbleSpawner.bubbles[b];
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(bubble.x, bubble.y, bubble.r, 0, Math.PI * 2, true);
+                ctx.closePath();
+                ctx.clip();                
+                var resizeOffset = -bubble.img.width/bubble.r*2
+                ctx.drawImage(bubble.img, bubble.x - bubble.img.width/2 + resizeOffset, bubble.y - bubble.img.height/2 + resizeOffset, bubble.img.width + resizeOffset, bubble.img.height + resizeOffset);
+                ctx.beginPath();
+                ctx.arc(0, 0, bubble.r, Math.PI*2, true);
+                ctx.clip();
+                ctx.closePath();
+                ctx.restore();
                 ctx.strokeStyle = bubble.col;
                 ctx.beginPath();
                 ctx.arc(bubble.x, bubble.y, bubble.r, 0, 2 * Math.PI);
@@ -113,6 +122,23 @@
             gradient = ctx.createLinearGradient(0, c.width, 0, c.height);
             gradient.addColorStop(0, '#cae0fc');
             gradient.addColorStop(1, '#718be2');
+
+            var promise = new Promise ((resolve, reject) => {
+                $.get('/game/pop/images', (urlString, status) => {
+                    if(urlString) {
+                        var urls = JSON.parse(urlString);
+                        for(var u in urls) {
+                            var dogImg = new Image();
+                            dogImg.src = urls[u];
+                            dogs.push(dogImg);
+                        }
+                        resolve();
+                    }
+                })
+            });
+            promise.then(() => {
+                gameLoop(); 
+            })
         }
         
         function drawBackground () {
@@ -120,7 +146,6 @@
             ctx.fillRect(0, 0, c.width, c.height);
         }
         setup();
-        gameLoop();
         
     </script>
 </html>
