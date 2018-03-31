@@ -130,16 +130,9 @@
     </style>
 
     <script type='text/javascript'>
-      var presetUser = 'DogLovingHuman';
-      var presetPwd = 'ILoveDogs123';
-      var presetBreeds = ['beagle', 'retriever'];
-      var presetStressors = ['work', 'school', 'deadlines', 'bad music',
-          'cliffhangers', 'bills', 'responsibilities'];
-
-      var currentBreeds = null;
-      var currentStressors = null;
       var auth = false;
       var navbarContents = $('#navbar-contents');
+      console.log("here");
       /**
        * This will handle login during assignment 3 but for now it will
        * print the username and password to console and allow a user
@@ -218,11 +211,9 @@
 
 
       if(auth) {
-        console.log("ath");
           navbarContents.append(accSettings);
           navbarContents.append(signout);
       } else {
-        console.log("no aut")
           navbarContents.append(login);
           navbarContents.append(signup);
       }
@@ -250,7 +241,6 @@
         $('#accsettings').remove();
         $('#signout').remove();
         location.href = "/game/pop";
-        document.getElementById('jazz-music').play();
     });
     $('#shooter-game').on('click', function () {
         $('#navbar-contents').append(backButton);
@@ -259,7 +249,6 @@
         $('#accsettings').remove();
         $('#signout').remove();
         location.href = "/game/shooter";
-        document.getElementById('jazz-music').play();
     });
     </script>
 

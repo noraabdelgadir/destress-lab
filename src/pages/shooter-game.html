@@ -42,20 +42,31 @@
   	top: 0;
   	left: 0;
   }
+
+  button {
+    background-color: #ff7ff9;
+    border: none;
+    color: black;
+    padding: 15px 32px;
+    border-radius: 8px;
+    display: inline-block;
+    font-size: 16px;
+  }
   </style>
-  <!-- jQuery library -->
-  <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
-  <!-- Bootstrap -->
-  <!-- Latest compiled and minified CSS -->
-  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
-  <!-- Latest compiled JavaScript -->
-  <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+    <!-- jQuery library -->
+    <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+    <!-- Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
+    <!-- Latest compiled JavaScript -->
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
 
 
     <audio controls style= "display: none" autoplay>
         <source src="/music/bensound-thejazzpiano.mp3"></source>
     </audio>
     <h1>Stress Shooting</h1>
+    <button type='button'>Back</button>
   </head>
 
   <div id='container' class='col-lg-8 col-centered'>
@@ -71,7 +82,9 @@
   "use strict";
 
   var loaded = false;
-
+  $("button").on('click', function () {
+    location.href = "/";
+  })
   /* variable declarations */
 
   // game and background canvases
