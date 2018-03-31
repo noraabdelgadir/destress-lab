@@ -44,14 +44,14 @@
                     bubbleSpawner.spawnCounter === 0
                     && bubbleSpawner.bubbles.length < 8
                 ){
-                    var pr = screenHeight / 14; //potential radius of new bubble
+                    var pr = screenHeight / 10; //potential radius of new bubble
                     var variance = 30;
                     bubbleSpawner.spawn(
                         pr + Math.random() * (screenWidth - 2 * pr),
                         pr + Math.random() * (screenHeight - 2 * pr),
                         pr - variance + Math.random() * variance,
-                        Math.random() * 12,
-                        Math.random() * 12,
+                        Math.random() * 8,
+                        Math.random() * 8,
                         0
                     );
                     bubbleSpawner.spawnCounter = 20;
@@ -72,7 +72,19 @@
                 }
             },
             drawBubble: (b) => {
+                /*
+                Image cropping onto canvas from:
+                https://jsfiddle.net/jaredwilli/ex5n5/
+                */
                 var bubble = bubbleSpawner.bubbles[b];
+                ctx.strokeStyle = bubble.col;
+                ctx.fillStyle = bubble.col;
+                ctx.beginPath();
+                ctx.arc(bubble.x, bubble.y, bubble.r, 0, 2 * Math.PI);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.arc(bubble.x, bubble.y, bubble.r, 0, 2 * Math.PI);
+                ctx.fill();
                 ctx.save();
                 ctx.beginPath();
                 ctx.arc(bubble.x, bubble.y, bubble.r, 0, Math.PI * 2, true);
@@ -85,10 +97,6 @@
                 ctx.clip();
                 ctx.closePath();
                 ctx.restore();
-                ctx.strokeStyle = bubble.col;
-                ctx.beginPath();
-                ctx.arc(bubble.x, bubble.y, bubble.r, 0, 2 * Math.PI);
-                ctx.stroke();
             },
             handlePop: (x, y) => {
                 for (var b in bubbleSpawner.bubbles) {
