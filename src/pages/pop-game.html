@@ -1,0 +1,121 @@
+<html>
+    <head>
+        <meta name="viewport" content="user-scalable=no">
+        <title>Pop!</title>
+    </head>
+    <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+    <script type="text/css" src="../scripts/pop-game.css"></script>
+    <body leftmargin='0' topmargin='0' rightmargin='0' bottommargin='0' marginwidth='0' marginheight='0' style="overflow:hidden">
+        <canvas id='screen'></canvas>
+    </body style="margin: 0;">
+    <script type="text/javascript">
+        'use strict';
+
+        var screenWidth = $(window).width();
+        var screenHeight = $(window).height();
+        var c = null;
+        var ctx = null;
+        var gradient = null;
+
+        $(window).on('click', function(e) {
+            bubbleSpawner.handlePop(e.pageX, e.pageY);
+        });
+
+        var bubbleSpawner = {
+            bubbles: [],
+            spawn: (x, y, r, dx, dy, img) => {
+                var newB = {
+                    x: x,
+                    y: y,
+                    r: r,
+                    dx: dx,
+                    dy: dy,
+                    col: 'purple',
+                    img: img
+                }
+                bubbleSpawner.bubbles.push(newB);
+                ctx.beginPath();
+                ctx.arc(x, y, r, 0, 2 * Math.PI);
+                ctx.stroke();
+            },
+            update: () => {
+                if (
+                    bubbleSpawner.spawnCounter === 0
+                    && bubbleSpawner.bubbles.length < 10
+                ){
+                    var pr = 100; //potential radius of new bubble
+                    var variance = 30;
+                    bubbleSpawner.spawn(
+                        pr + Math.random() * (screenWidth - 2 * pr),
+                        pr + Math.random() * (screenHeight - 2 * pr),
+                        pr - variance + Math.random() * variance,
+                        Math.random() * 10,
+                        Math.random() * 10,
+                        0
+                    );
+                    bubbleSpawner.spawnCounter = 20;
+                }
+                bubbleSpawner.spawnCounter -=1;
+                for (var b in bubbleSpawner.bubbles) {
+                    var bubble = bubbleSpawner.bubbles[b];
+                    if (bubble.x + bubble.r > screenWidth || bubble.x - bubble.r < 0)
+                        bubble.dx *= -1;
+                    if (bubble.y + bubble.r > screenHeight || bubble.y - bubble.r < 0)
+                        bubble.dy *= -1;
+                    bubble.x += bubble.dx;
+                    bubble.y += bubble.dy;
+                    bubbleSpawner.drawBubble(b);
+                }
+            },
+            drawBubble: (b) => {
+                var bubble = bubbleSpawner.bubbles[b];
+                ctx.strokeStyle = bubble.col;
+                ctx.beginPath();
+                ctx.arc(bubble.x, bubble.y, bubble.r, 0, 2 * Math.PI);
+                ctx.stroke();
+            },
+            handlePop: (x, y) => {
+                for (var b in bubbleSpawner.bubbles) {
+                    var bubble = bubbleSpawner.bubbles[b];
+                    if(
+                        bubble.x - bubble.r < x
+                        && bubble.x + bubble.r > x
+                        && bubble.y - bubble.r < y
+                        && bubble.y + bubble.r > y
+                    ){
+                        console.log("POP");
+                        bubbleSpawner.bubbles.pop(bubble);
+                    }
+                }
+            },
+            spawnCounter: 0
+        }
+
+        //JS goes here
+        function gameLoop () {
+            drawBackground();
+            bubbleSpawner.update();
+            setTimeout(gameLoop, 25);
+        }
+
+        function setup () {
+            console.log('setup')
+            c = document.getElementById('screen');
+            ctx = c.getContext('2d');
+            ctx.canvas.width = screenWidth;
+            ctx.canvas.height = screenHeight;
+            ctx.lineWidth = 10;
+            gradient = ctx.createLinearGradient(0, c.width, 0, c.height);
+            gradient.addColorStop(0, '#cae0fc');
+            gradient.addColorStop(1, '#175cac');
+        }
+        
+        function drawBackground () {
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, c.width, c.height);
+            
+        }
+        setup();
+        gameLoop();
+    </script>
+</html>
