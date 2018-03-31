@@ -19,35 +19,52 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(session({secret: 'Secret cookie!'}));
 
-var routes = require('./src/routes/index-routes');
-app.use('', routes);
+// var routes = require('./src/routes/index-routes');
+// app.use('', routes);
 
 /*  Page loading    */
-// app.get('/', (req, res) => {
-//     res.sendFile('./src/pages/main.html', {root: __dirname});
-// });
-//
-// app.get('/login', (req, res) => {
-//     res.sendFile('./src/pages/login.html', {root: __dirname});
-// });
-//
-// app.get('/signup', (req, res) => {
-//     res.sendFile('./src/pages/signup.html', {root: __dirname});
-// });
-//
-// app.get('/games', (req, res) => {
-//     // Check for session here
-//     res.sendFile('./src/pages/games.html', {root: __dirname});
-// });
+app.get('/', (req, res) => {
+    res.sendFile('./src/pages/home.html', {root: __dirname});
+});
+
+app.get('/images/grape.png', (req, res) => {
+    ms.pipe(req, res, './src/assets/images/grape.png');
+});
+
+app.get('/images/patrick.jpg', (req, res) => {
+    ms.pipe(req, res, './src/assets/images/patrick.jpg');
+});
+
+app.get('/login', (req, res) => {
+    res.sendFile('./src/pages/login.html', {root: __dirname});
+});
+
+app.get('/signup', (req, res) => {
+    res.sendFile('./src/pages/signup.html', {root: __dirname});
+});
+
+app.get('/games', (req, res) => {
+    // Check for session here
+    res.sendFile('./src/pages/games.html', {root: __dirname});
+});
 
 app.get('/game/pop', (req, res) => {
     res.sendFile('./src/pages/pop-game.html', {root: __dirname});
+});
+
+app.get('/game/shooter', (req, res) => {
+    res.sendFile('./src/pages/shooter-game.html', {root: __dirname});
 });
 
 /*  Game API    */
 app.get('/music/bensound-jazzcomedy.mp3', (req, res) => {
     ms.pipe(req, res, './music/bensound-jazzcomedy.mp3');
 });
+
+app.get('/music/bensound-thejazzpiano.mp3', (req, res) => {
+    ms.pipe(req, res, './music/bensound-thejazzpiano.mp3');
+});
+
 
 function getCollection(callback) {
     var promises = [];
