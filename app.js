@@ -33,6 +33,10 @@ app.get('/games', (req, res) => {
     res.sendFile('./src/pages/games.html', {root: __dirname});
 });
 
+app.get('/game/pop', (req, res) => {
+    res.sendFile('./src/pages/pop-game.html', {root: __dirname});
+});
+
 /*  RESTful User API    */
 app.get('/users', (req, res) => {
     User.find({}, (err, allUsers) => {
