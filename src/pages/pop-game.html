@@ -43,14 +43,14 @@
                     bubbleSpawner.spawnCounter === 0
                     && bubbleSpawner.bubbles.length < 8
                 ){
-                    var pr = screenWidth / 8; //potential radius of new bubble
+                    var pr = screenHeight / 14; //potential radius of new bubble
                     var variance = 30;
                     bubbleSpawner.spawn(
                         pr + Math.random() * (screenWidth - 2 * pr),
                         pr + Math.random() * (screenHeight - 2 * pr),
                         pr - variance + Math.random() * variance,
-                        Math.random() * 15,
-                        Math.random() * 15,
+                        Math.random() * 12,
+                        Math.random() * 12,
                         0
                     );
                     bubbleSpawner.spawnCounter = 20;
@@ -108,13 +108,12 @@
             ctx.lineWidth = 10;
             gradient = ctx.createLinearGradient(0, c.width, 0, c.height);
             gradient.addColorStop(0, '#cae0fc');
-            gradient.addColorStop(1, '#175cac');
+            gradient.addColorStop(1, '#718be2');
         }
         
         function drawBackground () {
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, c.width, c.height);
-            
         }
         setup();
         gameLoop();
