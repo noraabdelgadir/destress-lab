@@ -5,14 +5,37 @@
         <audio controls style="display: none" autoplay>
             <source src="/music/bensound-jazzcomedy.mp3"></source>
         </audio>
+        <style>
+          h1 {
+            color: #0262b5;
+            text-align: center;
+            font: italic 30px arial, sans-serif;
+            margin: 0;
+          }
+          button {
+            background-color: #ff7ff9;
+            border: none;
+            color: black;
+            padding: 15px 32px;
+            border-radius: 8px;
+            display: inline-block;
+            font-size: 16px;
+            float: left;
+          }
+        </style>
     </head>
     <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
     <script type="text/css" src="../scripts/pop-game.css"></script>
+    <h1>Pop!<h1>
+    <button type='button'>Back</button>
     <body leftmargin='0' topmargin='0' rightmargin='0' bottommargin='0' marginwidth='0' marginheight='0' style="overflow:hidden">
         <canvas id='screen'></canvas>
     </body style="margin: 0;">
     <script type="text/javascript">
         'use strict';
+        $("button").on('click', function () {
+          location.href = "/";
+        })
 
         var screenWidth = $(window).width();
         var screenHeight = $(window).height();
@@ -77,7 +100,7 @@
                 ctx.beginPath();
                 ctx.arc(bubble.x, bubble.y, bubble.r, 0, Math.PI * 2, true);
                 ctx.closePath();
-                ctx.clip();                
+                ctx.clip();
                 var resizeOffset = -bubble.img.width/bubble.r*2
                 ctx.drawImage(bubble.img, bubble.x - bubble.img.width/2 + resizeOffset, bubble.y - bubble.img.height/2 + resizeOffset, bubble.img.width + resizeOffset, bubble.img.height + resizeOffset);
                 ctx.beginPath();
@@ -137,15 +160,15 @@
                 })
             });
             promise.then(() => {
-                gameLoop(); 
+                gameLoop();
             })
         }
-        
+
         function drawBackground () {
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, c.width, c.height);
         }
         setup();
-        
+
     </script>
 </html>
