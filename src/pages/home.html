@@ -38,8 +38,9 @@
       }
 
       h1 {
-        font-family: sans-serif;
-        position: relative;
+        text-align: center;
+        font: italic 30px arial, sans-serif;
+        color: purple;
       }
 
       body {
@@ -132,7 +133,6 @@
     <script type='text/javascript'>
       var auth = false;
       var navbarContents = $('#navbar-contents');
-      console.log("here");
       /**
        * This will handle login during assignment 3 but for now it will
        * print the username and password to console and allow a user
@@ -208,8 +208,6 @@
 
       $('[data-toggle="popover"]').popover();
 
-
-
       if(auth) {
           navbarContents.append(accSettings);
           navbarContents.append(signout);
@@ -229,27 +227,12 @@
     </div>
 
     <script type='text/javascript'>
-    var signout = "<li id='signout'><a href='#' data-toggle='modal' data-target='#signout-modal'>Sign Out</a></li>";
-    var accSettings = "<li id='accsettings'><a href='#' data-toggle='modal' data-target='#settings-modal'>Account Settings</a></li>";
-    var backButton = "<li id='back'><a href='#'>Back</a></li>";
-    var login = "<li id='login'><a href='#' data-toggle='modal' data-target='#login-modal'>Log In</a></li>";
-    var signup = "<li id='signup'><a href='#' data-toggle='modal' data-target='#signup-modal'>Sign Up</a></li>";
-    $('#pop-game').on('click', function () {
-        $('#navbar-contents').append(backButton);
-        $('#login').remove();
-        $('#signup').remove();
-        $('#accsettings').remove();
-        $('#signout').remove();
-        location.href = "/game/pop";
-    });
-    $('#shooter-game').on('click', function () {
-        $('#navbar-contents').append(backButton);
-        $('#login').remove();
-        $('#signup').remove();
-        $('#accsettings').remove();
-        $('#signout').remove();
-        location.href = "/game/shooter";
-    });
+      $('#pop-game').on('click', function () {
+          location.href = "/game/pop";
+      });
+      $('#shooter-game').on('click', function () {
+          location.href = "/game/shooter";
+      });
     </script>
 
     <!--
