@@ -15,23 +15,26 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(session({secret: 'Secret cookie!'}));
 
+var routes = require('./src/routes/index-routes');
+app.use('', routes);
+
 /*  Page loading    */
-app.get('/', (req, res) => {
-    res.sendFile('./src/pages/home.html', {root: __dirname});
-});
-
-app.get('/login', (req, res) => {
-    res.sendFile('./src/pages/login.html', {root: __dirname});
-});
-
-app.get('/signup', (req, res) => {
-    res.sendFile('./src/pages/signup.html', {root: __dirname});
-});
-
-app.get('/games', (req, res) => {
-    // Check for session here
-    res.sendFile('./src/pages/games.html', {root: __dirname});
-});
+// app.get('/', (req, res) => {
+//     res.sendFile('./src/pages/main.html', {root: __dirname});
+// });
+//
+// app.get('/login', (req, res) => {
+//     res.sendFile('./src/pages/login.html', {root: __dirname});
+// });
+//
+// app.get('/signup', (req, res) => {
+//     res.sendFile('./src/pages/signup.html', {root: __dirname});
+// });
+//
+// app.get('/games', (req, res) => {
+//     // Check for session here
+//     res.sendFile('./src/pages/games.html', {root: __dirname});
+// });
 
 /*  RESTful User API    */
 app.get('/users', (req, res) => {
