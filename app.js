@@ -10,6 +10,9 @@ const User = require('./src/models/user');
 const bcrypt = require('bcrypt');
 const salt = 10;
 const ms = require('mediaserver');
+const request = require('request');
+const rp = require('request-promise');
+const n = 10;
 
 /*  Middleware  */
 app.use(bodyParser.urlencoded({extended: false}));
@@ -41,6 +44,36 @@ app.get('/game/pop', (req, res) => {
 /*  Game API    */
 app.get('/music/bensound-jazzcomedy.mp3', (req, res) => {
     ms.pipe(req, res, './music/bensound-jazzcomedy.mp3');
+});
+
+function getCollection(callback) {
+    var promises = [];
+    var images = [];
+
+    // Make n request-promises that add the image url to images on success
+    for(var i = 0; i < n; i++) {
+      var data = {
+        uri: 'http://dog.ceo/api/breeds/image/random',
+        qs: {},
+        json: true
+      };
+      promises.push(rp(data).then(function(img) {
+        images.push(img.message);
+      }));
+    }
+
+    // Wait for all promises and call callback on success
+    Promise.all(promises).then(function(results) {
+      callback(images);
+    }).catch(function(e) {
+      console.log(e);
+    });
+}
+
+app.get('/game/pop/images', (req, res) => {
+    getCollection((images) => {
+        res.send(JSON.stringify(images));
+    });
 });
 
 /*  RESTful User API    */
