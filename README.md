@@ -1,11 +1,15 @@
-# Assignment #3
+# Assignment #3: The De-Stress Lab
 
-## Files
-### test-user.json
-- sample user data
+## Members
+Nora Abdelgadir - abdelg19
 
-## To Run
-Go to Heroku link
-Or 
-- run npm install
-- node app.js
+Marie Merci Ishimwe - ishimwem
+
+Alison Tong - tongalis
+
+## To run
+Go to Heroku link http://de-stress-lab.herokuapp.com/ or:
+- clone repository
+- run npm install on command line
+- run node app.js on command line
+- go to localhost:3000 in your browser

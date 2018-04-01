@@ -12,17 +12,14 @@
     <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
     <!-- Latest compiled JavaScript -->
     <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
-
-    <!-- <script type="text/javascript" src='../assets/scripts/index.js'></script> -->
-    <!-- <link rel='stylesheet' type='text/css' href='../assets/css/index.css'> -->
-
   </head>
-  <body>
 
+  <body>
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
 
+    <!-- Navigation bar -->
     <nav class='navbar navbar-light bg-light'>
       <div class='nav navbar-nav navbar-right'>
         <ul id='navbar-contents' class='nav navbar-nav'>
@@ -30,6 +27,7 @@
       </div>
     </nav>
 
+    <!-- Styling -->
     <style>
       .navbar {
         margin: 0px 20px;
@@ -137,6 +135,7 @@
 
     </style>
 
+    <!-- Login and Signup -->
     <script type='text/javascript'>
       $(document).ready(function () {
         var auth = false;
@@ -230,23 +229,46 @@
           auth = true;
         }
 
+        function logoutSetup() {
+          $('#signout').remove();
+          $('#accsettings').remove();
+
+          // remove from account settings modal
+          var nodes = document.getElementById('breed-pref').childNodes;
+          var len = nodes.length;
+          for(var i = len - 1; i >= 0; i--) {
+            nodes[i].remove();
+          }
+          nodes = document.getElementById('stress-list').childNodes;
+          len = nodes.length;
+          for(var i = len - 1; i >= 0; i--) {
+            nodes[i].remove();
+          }
+
+          navbarContents.append(login);
+          navbarContents.append(signup);
+
+          currentBreeds = null;
+          currentStressors = null;
+        }
+
         /**
          * This will handle login during assignment 3 but for now it will
          * print the username and password to console and allow a user
          * to log in, regardless of correct credentials.
          */
         $('#login-modal #login-button').on('click', function () {
-            var username = $('#login-modal #username').val();
-            var password = $('#login-modal #login-pwd').val();
+          var username = $('#login-modal #username').val();
+          var password = $('#login-modal #login-pwd').val();
 
-            // Log it, in Assignment 3, we will send it to the server instead
-            console.log('username: ' + username);
-            console.log('password: ' + password);
+          // Log it, in Assignment 3, we will send it to the server instead
+          console.log('username: ' + username);
+          console.log('password: ' + password);
 
-            $.post("/user/login", {username: username, password: password}, (data, status) => {
-              console.log(data)
-              loginSetup(username, JSON.parse(data));
-            });
+          $.post("/user/login", {username: username, password: password}, (data, status) => {
+            console.log(data)
+            loginSetup(username, JSON.parse(data));
+          });
         });
 
         /**
@@ -254,23 +276,23 @@
          * as long as the two passwords match.
          */
         $('#signup-modal #signup-button').on('click', function () {
-            var username = $('#signup-modal signup-username');
-            var pwd1 = $('#signup-modal #pwd').val();
-            var pwd2 = $('#signup-modal #re-enter').val();
+          var username = $('#signup-modal #signup-username').val();
+          var pwd1 = $('#signup-modal #pwd').val();
+          var pwd2 = $('#signup-modal #re-enter').val();
 
-            // Log it, in Assignment 3, we will send it to the server instead
-            console.log('username: ' + $('#signup-modal #username').val());
-            console.log('password: ' + pwd1);
-            console.log('password: ' + pwd2);
+          // Log it, in Assignment 3, we will send it to the server instead
+          console.log('username: ' + username);
+          console.log('password: ' + pwd1);
+          console.log('password: ' + pwd2);
 
-            if (pwd1 === pwd2) {
-              $.post("/user", {username: username, password: pwd1}, (data, status) => {
-                console.log(data)
-                loginSetup(username, JSON.parse(data));
-              });
-            } else {
-                alert('Sign up unsuccessful.');
-            }
+          if (pwd1 === pwd2) {
+            $.post("/user", {username: username, password: pwd1}, (data, status) => {
+              console.log(data)
+              loginSetup(username, JSON.parse(data));
+            });
+          } else {
+              alert('Sign up unsuccessful.');
+          }
         });
 
         /**
@@ -278,33 +300,12 @@
          * the sign out button.
          */
         $('#signout-modal #signout-button').on('click', function () {
-            var navbarContents = $('#navbar-contents');
-            $('#signout').remove();
-            $('#accsettings').remove();
-
-            // remove from account settings modal
-            var nodes = document.getElementById('breed-pref').childNodes;
-            var len = nodes.length;
-            for(var i = len - 1; i >= 0; i--) {
-                nodes[i].remove();
-            }
-            nodes = document.getElementById('stress-list').childNodes;
-            len = nodes.length;
-            for(var i = len - 1; i >= 0; i--) {
-                nodes[i].remove();
-            }
-
-            navbarContents.append(login);
-            navbarContents.append(signup);
-
-            currentBreeds = null;
-            currentStressors = null;
-
-            $.get('/user/logout', (data, status) => {
-              console.log(data);
-            });
-
-            auth = false;
+          var navbarContents = $('#navbar-contents');
+          $.get('/user/logout', (data, status) => {
+            console.log(data);
+          });
+          logoutSetup();
+          auth = false;
         });
 
         var availableBreeds = [];
@@ -359,22 +360,24 @@
         $('#confirm-modal #c-delete-acc').on('click', function () {
           console.log('delete')
           $.ajax({
-              url: '/user',
-              type: 'DELETE',
-              success: (data, status) => {
-                console.log(data);
-              }
+            url: '/user',
+            type: 'DELETE',
+            success: (data, status) => {
+              console.log(data);
+            }
           });
+          logoutSetup();
+          auth = false;
         });
 
         $('[data-toggle="popover"]').popover();
 
         if(auth) {
-            navbarContents.append(accSettings);
-            navbarContents.append(signout);
+          navbarContents.append(accSettings);
+          navbarContents.append(signout);
         } else {
-            navbarContents.append(login);
-            navbarContents.append(signup);
+          navbarContents.append(login);
+          navbarContents.append(signup);
         }
       });
     </script>
@@ -397,15 +400,11 @@
             <img id='pop-game' class='img-rounded select-panel'
               src='images/pop.png' alt='Pop' height='50%' width='70%'>
             <p style= "max-width: 300px; text-align: center;">
-              Use your mouse to pop the bouncing dog bubbles.
+              Use your mouse or tap your screen to pop the bouncing dog bubbles.
             </p>
           </div>
         </div>
         </div>
-         <img id='pop-game' class='img-rounded select-panel' src='images/patrick.jpg' alt='Patrick' height='40%' width='40%' >
-      </div>
-      <div id='instructions' style= 'position:absolute'>
-
       </div>
     </div>
 

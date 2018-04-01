@@ -107,13 +107,14 @@ app.post('/user', (req, res) => {
             User.findOne({'username': req.body.username}, (err, user) => {
                 if (err) throw err;
                 else if (user) {
-                    console.log('Username taken!');
                     res.status(300);
+                    res.send('Username taken.');
                 } else {
-                    User.create(newUser, (err, user) => {
+                    User.create(newUser, (err, returnUser) => {
                         if (err) throw err;
                         else {
                             console.log("User " + req.body.username + " created.");
+                            req.session.user = {id: returnUser._id, username: returnUser.username};
                             res.status(201);
                             res.send(JSON.stringify({'breeds': [], 'stressors': []}));
                         }
@@ -139,10 +140,14 @@ app.post('/user/login', (req, res) => {
                     req.session.user = {id: user._id, username: username, 'breeds': user.breeds, 'stressors': user.stressors};
                     res.status(200);
                     res.send(JSON.stringify({'breeds': user.breeds, 'stressors': user.stressors}));
-                    } else {
-                    console.log('Username or password incorrect.');
+                } else {
+                    res.status(300);
+                    res.send('Login failed.');
                 }
             });
+        } else {
+            res.status(300);
+            res.send('Login failed.');
         }
     });
 });
