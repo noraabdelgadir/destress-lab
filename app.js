@@ -22,6 +22,7 @@ app.use(session({secret: 'Secret cookie!'}));
 /*  Page loading    */
 app.get('/', (req, res) => {
     res.sendFile('./src/pages/home.html', {root: __dirname});
+    console.log("loading main");
 });
 
 app.get('/images/grape.png', (req, res) => {
@@ -136,7 +137,7 @@ app.post('/user/login', (req, res) => {
             bcrypt.compare(pwd, user.password, (err, bcryptRes) => {
                 if (bcryptRes) {
                     console.log("User " + username + " logged in.");
-                    req.session.user = {id: user._id, username: username};
+                    req.session.user = {id: user._id, username: username, 'breeds': user.breeds, 'stressors': user.stressors};
                     res.status(200);
                     res.send(JSON.stringify({'breeds': user.breeds, 'stressors': user.stressors}));
                 } else {
@@ -168,6 +169,79 @@ app.delete('/user', (req, res) => {
             });
         }
     });
+});
+
+/* User settings */
+
+app.post('/user/addBreed', (req, res) => {
+  var username = req.session.user.username;
+  var breeds = req.session.user.breeds;
+  breeds.push(req.body.newBreed);
+
+  User.findOne({username: username}, function(err, user) {
+    if(err) throw err;
+    user.breeds = breeds;
+
+    user.save(function(err) {
+      if(err) throw err;
+    });
+
+    res.status(200);
+    res.send(JSON.stringify({'breeds': user.breeds}));
+  });
+});
+
+app.post('/user/removeBreed', (req, res) => {
+  var username = req.session.user.username;
+  var breeds = req.session.user.breeds;
+  var index = breeds.indexOf(req.body.toRemove);
+  breeds.splice(index, 1);
+
+  User.findOne({username: username}, function(err, user) {
+    if(err) throw err;
+    user.breeds = breeds;
+
+    user.save(function(err) {
+      if(err) throw err;
+    });
+    res.status(200);
+    res.send(JSON.stringify({'breeds': user.breeds}));
+  });
+});
+
+app.post('/user/addStressor', (req, res) => {
+  var username = req.session.user.username;
+  var stressors = req.session.user.stressors;
+  stressors.push(req.body.newStressor);
+
+  User.findOne({username: username}, function(err, user) {
+    if(err) throw err;
+    user.stressors = stressors;
+
+    user.save(function(err) {
+      if(err) throw err;
+    });
+    res.status(200);
+    res.send(JSON.stringify({'stressors': user.stressors}));
+  });
+});
+
+app.post('/user/removeStressor', (req, res) => {
+  var username = req.session.user.username;
+  var stressors = req.session.user.stressors;
+  var index = stressors.indexOf(req.body.toRemove);
+  stressors.splice(index, 1);
+
+  User.findOne({username: username}, function(err, user) {
+    if(err) throw err;
+    user.stressors = stressors;
+
+    user.save(function(err) {
+      if(err) throw err;
+    });
+    res.status(200);
+    res.send(JSON.stringify({'stressors': user.stressors}));
+  });
 });
 
 /*  Protected pages */
