@@ -11,5 +11,5 @@ Alison Tong - tongalis
 Go to Heroku link http://de-stress-lab.herokuapp.com/ or:
 - clone repository
 - run npm install on command line
-- run node app.js on command line
+- run npm start on command line
 - go to localhost:3000 in your browser
