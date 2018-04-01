@@ -1,4 +1,4 @@
-# Assignment #3: The De-Stress LAB
+# Assignment #3: The De-Stress Lab
 
 ## Files
 ### test-user.json
@@ -6,7 +6,9 @@
 
 ## Members
 Nora Abdelgadir - abdelg19
+
 Marie Merci Ishimwe - ishimwem
+
 Alison Tong - tongalis
 
 ## To run
