@@ -2,6 +2,11 @@
   margin: 0px 10px;
 }
 
+h1 {
+  font-family: sans-serif;
+  position: relative;
+}
+
 body {
   margin: 0;
   padding: 0;
