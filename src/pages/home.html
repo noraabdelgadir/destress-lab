@@ -171,7 +171,7 @@
             $('#' + item.id).remove();
             currentBreeds.splice(currentBreeds.indexOf(newBreed), 1);
             $.post("/user/removeBreed", {toRemove: item.innerHTML}, (data, status) => {
-                console.log("Removed breed" + item.innerHTML);
+                console.log(data);
             });
           });
         }
@@ -202,7 +202,7 @@
             $('#' + item.id).remove();
             currentStressors.splice(currentStressors.indexOf(newStressor), 1);
             $.post("/user/removeStressor", {toRemove: item.innerHTML}, (data, status) => {
-                console.log("Removed stressor" + item.innerHTML);
+                console.log(data);
             });
           });
         }
@@ -330,19 +330,30 @@
 
         $('#addbreed-modal #save-breed').on('click', function () {
           var breed = $('#addbreed-modal #new-breed').val();
-          addBreed(breed);
-          $.post("/user/addBreed", {newBreed: breed}, (data, status) => {
-              console.log("added breed" + breed);
-          });
+
+          if(currentBreeds.includes(breed)) {
+              alert("Breed already exists in your saved breeds");
+          } else {
+              addBreed(breed);
+              currentBreeds.push(breed);
+              $.post("/user/addBreed", {newBreed: breed}, (data, status) => {
+                  console.log(data);
+              });
+          }
         });
 
         //when a stressor is added attach a listener to the remove icon too
         $('#addstress-modal #save-stressor').on('click', function(){
           var stress = $('#addstress-modal #new-stressor').val();
-          addStress(stress);
-          $.post("/user/addStressor", {newStressor: stress}, (data, status) => {
-              console.log("added stressor" + stress);
-          });
+          if(currentStressors.includes(stress)) {
+              alert("Stressor already exists in your saved stressors");
+          } else {
+              addStress(stress);
+              currentStressors.push(stress);
+              $.post("/user/addStressor", {newStressor: stress}, (data, status) => {
+                  console.log(data);
+              });
+          }
         });
 
         $('#confirm-modal #c-delete-acc').on('click', function () {
@@ -391,11 +402,11 @@
           </div>
         </div>
         </div>
-        <!-- <img id='pop-game' class='img-rounded select-panel' src='images/patrick.jpg' alt='Patrick' height='40%' width='40%' > -->
+         <img id='pop-game' class='img-rounded select-panel' src='images/patrick.jpg' alt='Patrick' height='40%' width='40%' >
       </div>
-      <!-- <div id='instructions' style= 'position:absolute'>
+      <div id='instructions' style= 'position:absolute'>
 
-      </div> -->
+      </div>
     </div>
 
     <script type='text/javascript'>

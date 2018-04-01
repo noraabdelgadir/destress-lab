@@ -171,18 +171,18 @@ app.delete('/user', (req, res) => {
 app.post('/user/addBreed', (req, res) => {
   var username = req.session.user.username;
   var breeds = req.session.user.breeds;
-  console.log(username);
   breeds.push(req.body.newBreed);
 
   User.findOne({username: username}, function(err, user) {
     if(err) throw err;
     user.breeds = breeds;
-    console.log(user.breeds);
 
     user.save(function(err) {
-      console.log(user.breeds);
       if(err) throw err;
     });
+
+    res.status(200);
+    res.send(JSON.stringify({'breeds': user.breeds}));
   });
 });
 
@@ -199,16 +199,14 @@ app.post('/user/removeBreed', (req, res) => {
     user.save(function(err) {
       if(err) throw err;
     });
+    res.status(200);
+    res.send(JSON.stringify({'breeds': user.breeds}));
   });
 });
 
 app.post('/user/addStressor', (req, res) => {
-  console.log("getting in add stressor route");
   var username = req.session.user.username;
   var stressors = req.session.user.stressors;
-  console.log(username);
-  console.log(req.session.user.stressors);
-  console.log(req.body.newStressor);
   stressors.push(req.body.newStressor);
 
   User.findOne({username: username}, function(err, user) {
@@ -218,6 +216,8 @@ app.post('/user/addStressor', (req, res) => {
     user.save(function(err) {
       if(err) throw err;
     });
+    res.status(200);
+    res.send(JSON.stringify({'stressors': user.stressors}));
   });
 });
 
@@ -234,6 +234,8 @@ app.post('/user/removeStressor', (req, res) => {
     user.save(function(err) {
       if(err) throw err;
     });
+    res.status(200);
+    res.send(JSON.stringify({'stressors': user.stressors}));
   });
 });
 
