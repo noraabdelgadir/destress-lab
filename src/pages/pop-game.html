@@ -1,21 +1,59 @@
 <html>
     <head>
-        <meta name="viewport" content="user-scalable=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
         <title>Pop!</title>
+        <audio controls style="display: none" autoplay loop>
+            <source src="/music/bensound-jazzcomedy.mp3"></source>
+        </audio>
+        <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+        <!-- Bootstrap -->
+        <!-- Latest compiled and minified CSS -->
+        <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
+        <!-- Latest compiled JavaScript -->
+        <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+        <style>
+            body {
+                display: flex;
+                justify-content: center;
+            }
+            h1 {
+                position: absolute;
+                z-index: 1000;
+                display: flex;
+                color: #0262b5;
+                font: italic 20px arial, sans-serif;
+            }
+            button {
+                position: absolute;
+                z-index: 1000;
+                background-color: #ff7ff9;
+                border: none;
+                color: black;
+                padding: 10px 20px;
+                border-radius: 8px;
+                display: inline-block;
+                font-size: 16px;
+                top: 8%;
+            }
+        </style>
     </head>
-    <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
-    <script type="text/css" src="../scripts/pop-game.css"></script>
     <body leftmargin='0' topmargin='0' rightmargin='0' bottommargin='0' marginwidth='0' marginheight='0' style="overflow:hidden">
+        <h1>Pop!</h1>
+        <button id='back'>Back</button>
         <canvas id='screen'></canvas>
     </body style="margin: 0;">
     <script type="text/javascript">
         'use strict';
+        $("#back").on('click', function () {
+          location.href = "/";
+        })
 
         var screenWidth = $(window).width();
         var screenHeight = $(window).height();
         var c = null;
         var ctx = null;
         var gradient = null;
+        var dogs = []
 
         $(window).on('click', function(e) {
             bubbleSpawner.handlePop(e.pageX, e.pageY);
@@ -31,31 +69,31 @@
                     dx: dx,
                     dy: dy,
                     col: 'purple',
-                    img: img
+                    img: dogs[Math.floor(Math.random() * 10)]
                 }
                 bubbleSpawner.bubbles.push(newB);
-                ctx.beginPath();
-                ctx.arc(x, y, r, 0, 2 * Math.PI);
-                ctx.stroke();
             },
             update: () => {
                 if (
                     bubbleSpawner.spawnCounter === 0
-                    && bubbleSpawner.bubbles.length < 10
+                    && bubbleSpawner.bubbles.length < 8
                 ){
-                    var pr = 100; //potential radius of new bubble
+                    var pr = screenHeight / 10; //potential radius of new bubble
                     var variance = 30;
                     bubbleSpawner.spawn(
                         pr + Math.random() * (screenWidth - 2 * pr),
                         pr + Math.random() * (screenHeight - 2 * pr),
                         pr - variance + Math.random() * variance,
-                        Math.random() * 10,
-                        Math.random() * 10,
+                        Math.random() * 8,
+                        Math.random() * 8,
                         0
                     );
                     bubbleSpawner.spawnCounter = 20;
                 }
-                bubbleSpawner.spawnCounter -=1;
+                if (bubbleSpawner.spawnCounter <= 0)
+                    bubbleSpawner.spawnCounter = 20;
+                else
+                    bubbleSpawner.spawnCounter -=1;
                 for (var b in bubbleSpawner.bubbles) {
                     var bubble = bubbleSpawner.bubbles[b];
                     if (bubble.x + bubble.r > screenWidth || bubble.x - bubble.r < 0)
@@ -68,11 +106,31 @@
                 }
             },
             drawBubble: (b) => {
+                /*
+                Image cropping onto canvas from:
+                https://jsfiddle.net/jaredwilli/ex5n5/
+                */
                 var bubble = bubbleSpawner.bubbles[b];
                 ctx.strokeStyle = bubble.col;
+                ctx.fillStyle = bubble.col;
                 ctx.beginPath();
                 ctx.arc(bubble.x, bubble.y, bubble.r, 0, 2 * Math.PI);
                 ctx.stroke();
+                ctx.beginPath();
+                ctx.arc(bubble.x, bubble.y, bubble.r, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(bubble.x, bubble.y, bubble.r, 0, Math.PI * 2, true);
+                ctx.closePath();
+                ctx.clip();
+                var resizeOffset = -bubble.img.width/bubble.r*2
+                ctx.drawImage(bubble.img, bubble.x - bubble.img.width/2 + resizeOffset, bubble.y - bubble.img.height/2 + resizeOffset, bubble.img.width + resizeOffset, bubble.img.height + resizeOffset);
+                ctx.beginPath();
+                ctx.arc(0, 0, bubble.r, Math.PI*2, true);
+                ctx.clip();
+                ctx.closePath();
+                ctx.restore();
             },
             handlePop: (x, y) => {
                 for (var b in bubbleSpawner.bubbles) {
@@ -83,8 +141,7 @@
                         && bubble.y - bubble.r < y
                         && bubble.y + bubble.r > y
                     ){
-                        console.log("POP");
-                        bubbleSpawner.bubbles.pop(bubble);
+                        bubbleSpawner.bubbles.splice(b, 1);
                     }
                 }
             },
@@ -99,7 +156,6 @@
         }
 
         function setup () {
-            console.log('setup')
             c = document.getElementById('screen');
             ctx = c.getContext('2d');
             ctx.canvas.width = screenWidth;
@@ -107,15 +163,31 @@
             ctx.lineWidth = 10;
             gradient = ctx.createLinearGradient(0, c.width, 0, c.height);
             gradient.addColorStop(0, '#cae0fc');
-            gradient.addColorStop(1, '#175cac');
+            gradient.addColorStop(1, '#718be2');
+
+            var promise = new Promise ((resolve, reject) => {
+                $.get('/game/pop/images', (urlString, status) => {
+                    if(urlString) {
+                        var urls = JSON.parse(urlString);
+                        for(var u in urls) {
+                            var dogImg = new Image();
+                            dogImg.src = urls[u];
+                            dogs.push(dogImg);
+                        }
+                        resolve();
+                    }
+                })
+            });
+            promise.then(() => {
+                gameLoop();
+            })
         }
-        
+
         function drawBackground () {
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, c.width, c.height);
-            
         }
         setup();
-        gameLoop();
+
     </script>
 </html>
