@@ -292,6 +292,17 @@
             auth = false;
         });
 
+        $('#confirm-modal #c-delete-acc').on('click', function () {
+          console.log('delete')
+          $.ajax({
+              url: '/user',
+              type: 'DELETE',
+              success: (data, status) => {
+                console.log(data);
+              }
+          });
+        });
+
         $('[data-toggle="popover"]').popover();
 
         if(auth) {
@@ -398,6 +409,7 @@
           <ul class='nav nav-tabs'>
             <li class='active'><a data-toggle='tab' href='#breed-tab'>Breed Preference</a></li>
             <li><a data-toggle='tab' href='#stress-tab'>Stress List</a></li>
+            <li><a data-toggle='tab' href='#delete-tab'>Delete</a></li>
           </ul>
         </div>
         <div class='modal-body'>
@@ -412,8 +424,24 @@
               <div class='list-group scrollable' id='stress-list'></div>
               <button id='add-stress' type='button' class='btn btn-default' data-toggle='modal' data-target='#addstress-modal'>Add</button>
             </div>
+            <div id='delete-tab' class='tab-pane fade'>
+              <h3>Delete Account</h3>
+              <button id='delete-acc' type='button' class='btn btn-default' data-toggle='modal' data-target='#confirm-modal'>Delete Account</button>
+            </div>
           </div>
         </div>
+    </div>
+  </div>
+
+  <div id='confirm-modal'class='modal fade'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <h2>Are you sure you would like to delete your account?</h2>
+      </div>
+      <div class='modal-footer'>
+        <button id='c-delete-acc' type='button' class='btn btn-default' data-dismiss='modal'>Yes</button>
+        <button type='button' class='btn btn-default' data-dismiss='modal'>No</button>
+      </div>
     </div>
   </div>
 
