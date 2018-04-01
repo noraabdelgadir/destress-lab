@@ -1,3 +1,5 @@
+'use strict';
+
 $(document).ready(function () {
     var navbarContents = $('#navbar-contents');
     var signout = "<li id='signout'><a href='#' data-toggle='modal' data-target='#signout-modal'>Sign Out</a></li>";
@@ -76,10 +78,10 @@ $(document).ready(function () {
         $('#navbar-contents').append(signout);
 
         var promise = new Promise((resolve, reject) => {
-            $.get('/game/breeds', (breeds, status) => {
+            $.get('/user/breeds', (breeds, status) => {
             currentBreeds = JSON.parse(breeds);
             }).then(() => {
-            $.get('/game/stressors', (stressors, status) => {
+            $.get('/user/stressors', (stressors, status) => {
                 currentStressors = JSON.parse(stressors);
             }).then(() => {
                 resolve();
@@ -97,6 +99,9 @@ $(document).ready(function () {
         });
     }
 
+    /**
+     * Set up the buttons and empty breeds/stressors.
+    */
     function logoutSetup() {
         $('#signout').remove();
         $('#accsettings').remove();
@@ -121,17 +126,11 @@ $(document).ready(function () {
     }
 
     /**
-     * This will handle login during assignment 3 but for now it will
-     * print the username and password to console and allow a user
-     * to log in, regardless of correct credentials.
+     * Sends a login request and updates view accordingly.
      */
     $('#login-modal #login-button').on('click', function () {
         var username = $('#login-modal #username').val();
         var password = $('#login-modal #login-pwd').val();
-
-        // Log it, in Assignment 3, we will send it to the server instead
-        console.log('username: ' + username);
-        console.log('password: ' + password);
 
         $.post("/user/login", {username: username, password: password}, (data, status) => {
             console.log(data)
@@ -140,18 +139,12 @@ $(document).ready(function () {
     });
 
     /**
-     * Similar to login, a user can sign up without proper credentials,
-     * as long as the two passwords match.
+     * Creates a user and updates view accordingly.
      */
     $('#signup-modal #signup-button').on('click', function () {
         var username = $('#signup-modal #signup-username').val();
         var pwd1 = $('#signup-modal #pwd').val();
         var pwd2 = $('#signup-modal #re-enter').val();
-
-        // Log it, in Assignment 3, we will send it to the server instead
-        console.log('username: ' + username);
-        console.log('password: ' + pwd1);
-        console.log('password: ' + pwd2);
 
         if (pwd1 === pwd2) {
             $.post("/user", {username: username, password: pwd1}, (data, status) => {
@@ -164,8 +157,7 @@ $(document).ready(function () {
     });
 
     /**
-     * Returns login and signup buttons to where they were and removes
-     * the sign out button.
+     * Sends a logout request and updates view accordingly.
      */
     $('#signout-modal #signout-button').on('click', function () {
         var navbarContents = $('#navbar-contents');
@@ -176,6 +168,7 @@ $(document).ready(function () {
         auth = false;
     });
 
+    /*  Retrieve breeds from the Dog API to display on dropdown menu    */
     var availableBreeds = [];
     $.ajax({
         url: "https://dog.ceo/api/breeds/list/all",
@@ -197,6 +190,9 @@ $(document).ready(function () {
         }
     });
 
+    /**
+     * Sends a request to add a breed to a user's preferences.
+     */
     $('#addbreed-modal #save-breed').on('click', function () {
         var breed = $('#addbreed-modal #new-breed').val();
 
@@ -206,12 +202,14 @@ $(document).ready(function () {
             addBreed(breed);
             currentBreeds.push(breed);
             $.post("/user/addBreed", {newBreed: breed}, (data, status) => {
-            console.log(data);
+                console.log(data);
             });
         }
     });
 
-    //when a stressor is added attach a listener to the remove icon too
+    /**
+     * Sends a request to add a stressor to a user's preferences.
+     */
     $('#addstress-modal #save-stressor').on('click', function(){
         var stress = $('#addstress-modal #new-stressor').val();
         if(currentStressors.includes(stress)) {
@@ -220,23 +218,26 @@ $(document).ready(function () {
             addStress(stress);
             currentStressors.push(stress);
             $.post("/user/addStressor", {newStressor: stress}, (data, status) => {
-            console.log(data);
+                console.log(data);
             });
         }
     });
 
+    /**
+     * Sends a request to delete a user's account after confirming.
+     */
     $('#confirm-modal #c-delete-acc').on('click', function () {
-        console.log('delete')
         $.ajax({
-        url: '/user',
-        type: 'DELETE',
-        success: (data, status) => {
-            console.log(data);
-        }
+            url: '/user',
+            type: 'DELETE',
+            success: (data, status) => {
+                console.log(data);
+            }
         });
         logoutSetup();
     });
 
+    /*  Game redirect listeners */
     $('#pop-game').on('click', function () {
         location.href = "/game/pop";
     });
@@ -245,8 +246,7 @@ $(document).ready(function () {
         location.href = "/game/shooter";
     });
 
-    $('[data-toggle="popover"]').popover();
-
+    /*  Sets up the view according to authentication status */
     $.get('user/isauth', (data, status) => {
         var isAuth = JSON.parse(data);
         if (isAuth) {

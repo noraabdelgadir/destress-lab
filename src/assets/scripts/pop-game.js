@@ -122,7 +122,7 @@ function setup () {
     gradient.addColorStop(1, '#718be2');
 
     var promise = new Promise ((resolve, reject) => {
-        $.get('/game/pop/images', (urlString, status) => {
+        $.get('/user/images', (urlString, status) => {
             if(urlString) {
                 var urls = JSON.parse(urlString);
                 for(var u in urls) {

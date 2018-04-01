@@ -324,7 +324,7 @@ function collisionDetection() {
 function addDog(n, breeds) {
     var dogImages = [];
     var promise = new Promise ((resolve, reject) => {
-    $.get('/game/pop/images', (urlString, status) => {
+    $.get('/user/images', (urlString, status) => {
         if(urlString) {
             var urls = JSON.parse(urlString);
             for(var u in urls) {
@@ -381,7 +381,7 @@ function loadStuff() {
     var breeds = window.parent.parent.currentBreeds;
 
     var promise = new Promise ((resolve, reject) => {
-    $.get('/game/stressors', (data, status) => {
+    $.get('/user/stressors', (data, status) => {
         if(data) {
             stressors = JSON.parse(data);
             resolve();
@@ -415,16 +415,16 @@ function draw() {
     bcanvas.height = $(window).height();
 
     if(bcanvas.width < 800) {
-    gcanvas.width = bcanvas.width - 50;
+        gcanvas.width = bcanvas.width - 50;
     }
     else {
-    gcanvas.width = 500;
+        gcanvas.width = 500;
     }
     if(bcanvas.height < 600) {
-    gcanvas.height = bcanvas.height - 50;
+        gcanvas.height = bcanvas.height - 50;
     }
     else {
-    gcanvas.height = 500;
+        gcanvas.height = 500;
     }
 
     ctx.clearRect(0, 0, gcanvas.width, gcanvas.height);
