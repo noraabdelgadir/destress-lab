@@ -63,8 +63,12 @@ var bubbleSpawner = {
     },
     drawBubble: (b) => {
         /*
-        Image cropping onto canvas from:
-        https://jsfiddle.net/jaredwilli/ex5n5/
+        Code below is based off of the code found here:
+
+            Author: Jared Williams
+            Title: Image caching thing and Canvas
+            Type: JavaScript
+            Availability: https://jsfiddle.net/jaredwilli/ex5n5/
         */
         var bubble = bubbleSpawner.bubbles[b];
         ctx.strokeStyle = bubble.col;
