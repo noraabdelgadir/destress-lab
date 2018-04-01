@@ -1,10 +1,11 @@
 .navbar {
-  margin: 0px 10px;
+  margin: 0px 20px;
 }
 
 h1 {
-  font-family: sans-serif;
-  position: relative;
+  text-align: center;
+  font: italic 30px arial, sans-serif;
+  color: purple;
 }
 
 body {
@@ -80,6 +81,11 @@ body {
   right: 1em;
   bottom: 0em;
   text-align: center;
+}
+
+.shooter {
+  text-align: justify;
+  justify-content: center;
 }
 
 .scrollable {

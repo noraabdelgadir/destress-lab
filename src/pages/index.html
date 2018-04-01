@@ -1,0 +1,205 @@
+<html lang='en'>
+  <head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
+    <title>De-stress Lab: For a Ruff Day</title>
+    <!-- jQuery library -->
+    <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+    <!-- Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
+    <!-- Latest compiled JavaScript -->
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+    <link rel='stylesheet' type='text/css' href='/src/assets/css/index.css'>
+    <script type='text/javascript' src='/src/assets/scripts/index.js'></script>
+  </head>
+  <body>
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+    <!-- Navigation bar -->
+    <nav class='navbar navbar-light bg-light'>
+      <div class='nav navbar-nav navbar-right'>
+        <ul id='navbar-contents' class='nav navbar-nav'>
+        </ul>
+      </div>
+    </nav>
+    <!--
+      Main Screen
+    -->
+    <h1> Welcome to the De-Stress Lab!</h1>
+    <div id='main-screen'>
+      <div id='game-panel-container' class='container'>
+        <div id="shooter" class="row">
+          <div class="col-sm-5 col-lg-offset-1">
+            <img id='shooter-game' class='img-rounded select-panel'
+              src='images/grape.png' alt='Grape' height='50%' width='80%'>
+              <p style= "max-width: 320px; text-align: center;">
+                Use arrow keys to move and space to shoot.
+                If you don't want to use the bullets,
+                you can simply attack the stresses with the character.
+              </p>
+          </div>
+          <div class="col-sm-5">
+            <img id='pop-game' class='img-rounded select-panel'
+              src='images/pop.png' alt='Pop' height='50%' width='70%'>
+            <p style= "max-width: 300px; text-align: center;">
+              Use your mouse or tap your screen to pop the bouncing dog bubbles.
+            </p>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+    <!--
+      Modals, following Bootstrap modal format.
+    -->
+    <div id='login-modal'class='modal fade'>
+      <div class='modal-content'>
+          <div class='modal-header'>
+            <h2>Log In</h2>
+          </div>
+          <div class='modal-body'>
+              <div class='form-group'>
+                <label for='username'>Username</label>
+                <input type='username' class='form-control' id='username'>
+              </div>
+              <div class='form-group'>
+                <label for='login-pwd'>Password</label>
+                <input type='password' class='form-control' id='login-pwd'>
+              </div>
+          </div>
+          <div class='modal-footer'>
+            <button id='login-button' type='button' class='btn btn-default' data-dismiss='modal'>Log In</button>
+            <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
+          </div>
+      </div>
+    </div>
+
+    <div id='signup-modal'class='modal fade'>
+      <div class='modal-content'>
+          <div class='modal-header'>
+            <h2>Sign Up</h2>
+          </div>
+          <div class='modal-body'>
+              <div class='form-group'>
+                <label for='signup-username'>Username</label>
+                <input type='username' class='form-control' id='signup-username'>
+              </div>
+              <div class='form-group'>
+                <label for='pwd'>Password</label>
+                <input type='password' class='form-control' id='pwd'>
+              </div>
+              <div class='form-group'>
+                <label for='re-enter'>Re-enter Password</label>
+                <input type='password' class='form-control' id='re-enter'>
+              </div>
+          </div>
+          <div class='modal-footer'>
+            <button id='signup-button' type='button' class='btn btn-default' data-dismiss='modal'>Sign Up</button>
+            <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
+          </div>
+      </div>
+    </div>
+
+    <div id='signout-modal'class='modal fade'>
+      <div class='modal-content'>
+          <div class='modal-header'>
+            <h2>Sign Out</h2>
+          </div>
+          <div class='modal-body'>
+              <div class='form-group'>
+                <p>Would you like to sign out of your account?</p>
+              </div>
+          </div>
+          <div class='modal-footer'>
+            <button id='signout-button' type='button' class='btn btn-default' data-dismiss='modal'>Yes</button>
+            <button type='button' class='btn btn-default' data-dismiss='modal'>No</button>
+          </div>
+      </div>
+    </div>
+  </body>
+
+  <div id='settings-modal'class='modal fade'>
+    <div class='modal-content'>
+        <div class='modal-header'>
+          <button type='button' class='close' data-dismiss='modal'>&times;</button>
+          <ul class='nav nav-tabs'>
+            <li class='active'><a data-toggle='tab' href='#breed-tab'>Breed Preference</a></li>
+            <li><a data-toggle='tab' href='#stress-tab'>Stress List</a></li>
+            <li><a data-toggle='tab' href='#delete-tab'>Delete</a></li>
+          </ul>
+        </div>
+        <div class='modal-body'>
+          <div class='tab-content'>
+            <div id='breed-tab' class='tab-pane fade in active'>
+              <h3>My Breeds</h3>
+              <div class='list-group scrollable' id='breed-pref'></div>
+              <button id='add-stress' type='button' class='btn btn-default' data-toggle='modal' data-target='#addbreed-modal'>Add</button>
+            </div>
+            <div id='stress-tab' class='tab-pane fade'>
+              <h3>My Stressors</h3>
+              <div class='list-group scrollable' id='stress-list'></div>
+              <button id='add-stress' type='button' class='btn btn-default' data-toggle='modal' data-target='#addstress-modal'>Add</button>
+            </div>
+            <div id='delete-tab' class='tab-pane fade'>
+              <h3>Delete Account</h3>
+              <button id='delete-acc' type='button' class='btn btn-default' data-toggle='modal' data-target='#confirm-modal'>Delete Account</button>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <div id='confirm-modal'class='modal fade'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <h2>Are you sure you would like to delete your account?</h2>
+      </div>
+      <div class='modal-footer'>
+        <button id='c-delete-acc' type='button' class='btn btn-default' data-dismiss='modal'>Yes</button>
+        <button type='button' class='btn btn-default' data-dismiss='modal'>No</button>
+      </div>
+    </div>
+  </div>
+
+  <div id='addbreed-modal'class='modal fade'>
+    <div class='modal-content'>
+        <div class='modal-header'>
+          <button type='button' class='close' data-dismiss='modal'>&times;</button>
+          <h2>New Breed</h2>
+        </div>
+        <div class='modal-body'>
+          <div class='input-group'>
+            <div class='dropdown'>
+              <button class='btn btn-primary dropdown-toggle' type='button' data-toggle='dropdown'>Breeds
+              <span class='caret'></span></button>
+              <ul class='dropdown-menu scrollable' id='dropdown-menu'></ul>
+            </div>
+            <input type='text' class='form-control' id='new-breed' disabled='disabled'></input>
+            <div class='input-group-btn'>
+              <button class='btn btn-default' type='submit' id='save-breed'><i class='glyphicon glyphicon-plus-sign'></i></button>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <div id='addstress-modal'class='modal fade'>
+    <div class='modal-content'>
+        <div class='modal-header'>
+          <button type='button' class='close' data-dismiss='modal'>&times;</button>
+          <h2>New Stressor</h2>
+        </div>
+        <div class='modal-body'>
+          <div class='input-group'>
+            <input type='text' class='form-control' id='new-stressor'>
+            <div class='input-group-btn'>
+              <button class='btn btn-default' type='submit' id='save-stressor'><i class='glyphicon glyphicon-plus-sign'></i></button>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+  </body>
+</html>

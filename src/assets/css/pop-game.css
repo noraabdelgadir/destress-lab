@@ -1,0 +1,23 @@
+body {
+    display: flex;
+    justify-content: center;
+}
+h1 {
+    position: absolute;
+    z-index: 1000;
+    display: flex;
+    color: #0262b5;
+    font: italic 20px arial, sans-serif;
+}
+button {
+    position: absolute;
+    z-index: 1000;
+    background-color: #ff7ff9;
+    border: none;
+    color: black;
+    padding: 10px 20px;
+    border-radius: 8px;
+    display: inline-block;
+    font-size: 16px;
+    top: 8%;
+}

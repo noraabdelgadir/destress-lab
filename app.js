@@ -1,5 +1,6 @@
 'use strict';
 
+/*  Constants   */
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
@@ -13,21 +14,20 @@ const ms = require('mediaserver');
 const request = require('request');
 const rp = require('request-promise');
 const n = 10;
-
 const presetStressors =
     ['school', 'bills', 'osap loans', 'work', 'remark requests',
     'csc373', 'job applications', 'vacuum cleaners', 'time', 'health',
     'failure'];
 
 /*  Middleware  */
+app.use(express.static(__dirname + '/'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(session({secret: 'Secret cookie!'}));
 
 /*  Page loading    */
 app.get('/', (req, res) => {
-    res.sendFile('./src/pages/home.html', {root: __dirname});
-    console.log("loading main");
+    res.sendFile('./src/pages/index.html', {root: __dirname});
 });
 
 app.get('/images/grape.png', (req, res) => {
@@ -59,14 +59,12 @@ function getCollection(breeds, callback) {
     var promises = [];
     var images = [];
     var queryUrl = 'http://dog.ceo/api/breeds/image/random';
-    console.log(breeds);
 
     // Make n request-promises that add the image url to images on success
     for(var i = 0; i < n; i++) {
         if(breeds.length > 0) {
             queryUrl = "https://dog.ceo/api/breed/" + breeds[Math.round(Math.random() * (breeds.length - 1))] + "/images/random"
         }
-        console.log(queryUrl);
         var data = {
             uri: queryUrl,
             qs: {},
@@ -91,7 +89,6 @@ app.get('/game/pop/images', (req, res) => {
         breeds = req.session.user.breeds;
     }
     getCollection(breeds, (images) => {
-        console.log(images);
         res.status(200);
         res.send(JSON.stringify(images));
     });
@@ -163,11 +160,9 @@ app.post('/user', (req, res) => {
 app.post('/user/login', (req, res) => {
     var username = req.body.username;
     var pwd = req.body.password;
-    console.log('looking for user on database');
     User.findOne({'username': username}, (err, user) => {
         if (err) throw err;
         else if (user) {
-            console.log('user  exists');
             // Compare plaintext password to its encrypted counterpart on DB
             bcrypt.compare(pwd, user.password, (err, bcryptRes) => {
                 if (bcryptRes) {
@@ -176,6 +171,7 @@ app.post('/user/login', (req, res) => {
                     res.status(200);
                     res.send(JSON.stringify({'breeds': user.breeds, 'stressors': user.stressors}));
                 } else {
+                    console.log("Wrong password.");
                     res.status(300);
                     res.send('Login failed.');
                 }
