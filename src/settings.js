@@ -166,12 +166,12 @@ $( document ).ready(function() {
   }
 
 
-  $('#addbreed-modal #save-breed').on('click', function () {
-    addBreed($('#addbreed-modal #new-breed').val());
-  });
-
-  //when a stressor is added attach a listener to the remove icon too
-  $('#addstress-modal #save-stressor').on('click', function(){
-    addStress($('#addstress-modal #new-stressor').val());
-  });
+  // $('#addbreed-modal #save-breed').on('click', function () {
+  //   addBreed($('#addbreed-modal #new-breed').val());
+  // });
+  //
+  // //when a stressor is added attach a listener to the remove icon too
+  // $('#addstress-modal #save-stressor').on('click', function(){
+  //   addStress($('#addstress-modal #new-stressor').val());
+  // });
 });

@@ -21,7 +21,7 @@ app.use(session({secret: 'Secret cookie!'}));
 
 /*  Page loading    */
 app.get('/', (req, res) => {
-    res.sendFile('./src/pages/main.html', {root: __dirname});
+    res.sendFile('./src/pages/home.html', {root: __dirname});
     console.log("loading main");
 });
 
@@ -136,7 +136,7 @@ app.post('/user/login', (req, res) => {
             bcrypt.compare(pwd, user.password, (err, bcryptRes) => {
                 if (bcryptRes) {
                     console.log("User " + username + " logged in.");
-                    req.session.user = {id: user._id, username: username};
+                    req.session.user = {id: user._id, username: username, 'breeds': user.breeds, 'stressors': user.stressors};
                     res.status(200);
                     res.send(JSON.stringify({'breeds': user.breeds, 'stressors': user.stressors}));
                     } else {
@@ -177,8 +177,10 @@ app.post('/user/addBreed', (req, res) => {
   User.findOne({username: username}, function(err, user) {
     if(err) throw err;
     user.breeds = breeds;
+    console.log(user.breeds);
 
     user.save(function(err) {
+      console.log(user.breeds);
       if(err) throw err;
     });
   });
@@ -201,9 +203,12 @@ app.post('/user/removeBreed', (req, res) => {
 });
 
 app.post('/user/addStressor', (req, res) => {
+  console.log("getting in add stressor route");
   var username = req.session.user.username;
   var stressors = req.session.user.stressors;
   console.log(username);
+  console.log(req.session.user.stressors);
+  console.log(req.body.newStressor);
   stressors.push(req.body.newStressor);
 
   User.findOne({username: username}, function(err, user) {
