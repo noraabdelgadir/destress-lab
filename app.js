@@ -18,6 +18,7 @@ app.use(session({secret: 'Secret cookie!'}));
 /*  Page loading    */
 app.get('/', (req, res) => {
     res.sendFile('./src/pages/main.html', {root: __dirname});
+    console.log("loading main");
 });
 
 app.get('/login', (req, res) => {
