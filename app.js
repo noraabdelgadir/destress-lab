@@ -28,8 +28,8 @@ app.get('/images/grape.png', (req, res) => {
     ms.pipe(req, res, './src/assets/images/grape.png');
 });
 
-app.get('/images/patrick.jpg', (req, res) => {
-    ms.pipe(req, res, './src/assets/images/patrick.jpg');
+app.get('/images/pop.png', (req, res) => {
+    ms.pipe(req, res, './src/assets/images/pop.png');
 });
 
 app.get('/game/pop', (req, res) => {
