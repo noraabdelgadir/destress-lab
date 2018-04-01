@@ -1,9 +1,5 @@
 # Assignment #3: The De-Stress Lab
 
-## Files
-### test-user.json
-- sample user data
-
 ## Members
 Nora Abdelgadir - abdelg19
 
