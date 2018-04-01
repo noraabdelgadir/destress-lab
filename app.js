@@ -237,34 +237,6 @@ app.post('/user/removeStressor', (req, res) => {
   });
 });
 
-app.post('/user/changeUsername', (req, res) => {
-  var username = req.session.user.username;
-  var newUsername = req.body.newUsername;
-
-  User.findOne({username: username}, function(err, user) {
-    if(err) throw err;
-    user.username = newUsername;
-
-    user.save(function(err) {
-      if(err) throw err;
-    });
-  });
-});
-
-app.post('/user/changePassword', (req, res) => {
-  var username = req.session.user.username;
-  var newPassword = req.body.newPwd;
-
-  User.findOne({username: username}, function(err, user) {
-    if(err) throw err;
-    user.password = newPassword;
-
-    user.save(function(err) {
-      if(err) throw err;
-    });
-  });
-});
-
 /*  Protected pages */
 
 /*  Helper function to check authenticated user */
