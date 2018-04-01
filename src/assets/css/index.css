@@ -61,20 +61,6 @@ body {
   margin-right: 22.5%;
 }
 
-#instructions {
-  position: absolute;
-  color: white;
-  bottom: 8em;
-  left: 15em;
-}
-
-#music-cred {
-  font-weight: 700;
-  position: absolute;
-  bottom: 2em;
-  left: 1em;
-}
-
 #new-breed {
   width: 50%;
   height: 35px;
