@@ -1,7 +1,7 @@
 # The Destress Lab for a Ruff Day
 
 ## Main Page
-The main page includes the login or signup or you can simply play the games without logging in. To play one of the two games, the user must press the game’s picture. Underneath each game’s picture, there’s a set of instructions for how to play the game. To login, click login on the navigation tab on top. The same process is used for signing up. In this phase, we have integrated the backend, meaning now the user’s information will be stored once they sign up for future logins. The application is currently deployed on Heroku; to access it, use the link http://[who]
+The main page includes the login or signup or you can simply play the games without logging in. To play one of the two games, the user must press the game’s picture. Underneath each game’s picture, there’s a set of instructions for how to play the game. To login, click login on the navigation tab on top. The same process is used for signing up. In this phase, we have integrated the backend, meaning now the user’s information will be stored once they sign up for future logins. The application is currently deployed on Heroku; to access it, use the link http://http://de-stress-lab.herokuapp.com/
 
 ## Settings View
 When logged in a user should be able to access their account settings that includes the user’s stressors list and their saved favourite breeds. The user can also delete or add new stressors or breeds.  Stresses can be typed in directly but breeds are selected from a dropdown list.  Clicking the add button (+) will add the information and clicking the trash button will delete the respective setting from the account. If the user signs out and logs in again, their breeds and stressors persist.
