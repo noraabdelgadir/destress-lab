@@ -48,12 +48,7 @@ var shooting = false;
 // stresses that are defeated count
 var defeated = 0;
 
-// sample hard coded stresses
-var stresses = [{name: "work", x: 400, y: 30, dx: dx - 2, dy, show: true},
-    {name: "project", x: 50, y: 90, dx, dy, show: true}];
-var defaultStresses = [{name: "work", x: 400, y: 30, dx: dx - 2, dy, show: true},
-{name: "project", x: 50, y: 90, dx, dy, show: true}];
-
+// check if user is logged in
 var authCheck = false;
 
 // user input
@@ -257,7 +252,6 @@ function addStress(stressors) {
         stresses = defaultStresses;
     } else {
         for(var i = 0; i < stressors.length; i++) {
-            console.log(stressors[i])
             var randomX = Math.floor(Math.random() * gcanvas.width - 50) + 45;
             var randomY = Math.floor(Math.random() * gcanvas.height - 45) + 50;
             var speed = Math.floor(Math.random() * 3);
@@ -343,7 +337,6 @@ function addDog(n, breeds) {
             var randomY = Math.floor(Math.random() * bcanvas.height - 150) + 75;
             dogs.push({bx: randomX, by: randomY, bdx: ballSpeed, bdy: ballSpeed, image: dogImages[d]});
         }
-        console.log(dogs)
     });
 }
 
