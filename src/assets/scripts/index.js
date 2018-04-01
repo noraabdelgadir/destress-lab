@@ -79,22 +79,22 @@ $(document).ready(function () {
 
         var promise = new Promise((resolve, reject) => {
             $.get('/user/breeds', (breeds, status) => {
-            currentBreeds = JSON.parse(breeds);
+                currentBreeds = JSON.parse(breeds);
             }).then(() => {
-            $.get('/user/stressors', (stressors, status) => {
-                currentStressors = JSON.parse(stressors);
-            }).then(() => {
-                resolve();
-            });
+                $.get('/user/stressors', (stressors, status) => {
+                    currentStressors = JSON.parse(stressors);
+                }).then(() => {
+                    resolve();
+                });
             });
         });
 
         promise.then(() => {
             for(var i = 0; i < currentBreeds.length; i++) {
-            addBreed(currentBreeds[i]);
+                addBreed(currentBreeds[i]);
             }
             for(var i = 0; i < currentStressors.length; i++) {
-            addStress(currentStressors[i]);
+                addStress(currentStressors[i]);
             }
         });
     }
@@ -148,8 +148,8 @@ $(document).ready(function () {
 
         if (pwd1 === pwd2) {
             $.post("/user", {username: username, password: pwd1}, (data, status) => {
-            console.log(data)
-            loginSetup(username, JSON.parse(data));
+                console.log(data)
+                loginSetup(username, JSON.parse(data));
             });
         } else {
             alert('Sign up unsuccessful.');
@@ -177,11 +177,11 @@ $(document).ready(function () {
             availableBreeds = Object.keys(response.message);
             var list = document.getElementById('dropdown-menu');
             for(var i = 0; i < availableBreeds.length; i++) {
-            var entry = document.createElement('li');
-            entry.id = availableBreeds[i] + '-dropdown-box';
-            entry.className = 'dropdown-element'
-            entry.innerHTML = availableBreeds[i];
-            list.append(entry);
+                var entry = document.createElement('li');
+                entry.id = availableBreeds[i] + '-dropdown-box';
+                entry.className = 'dropdown-element'
+                entry.innerHTML = availableBreeds[i];
+                list.append(entry);
             }
             // Change the input field to whatever is selected in dropdown
             $('#dropdown-menu li').on('click', function () {
@@ -195,7 +195,6 @@ $(document).ready(function () {
      */
     $('#addbreed-modal #save-breed').on('click', function () {
         var breed = $('#addbreed-modal #new-breed').val();
-
         if(currentBreeds.includes(breed)) {
             alert("Breed already exists in your saved breeds");
         } else {
