@@ -12,20 +12,22 @@ body {
 }
 
 h1 {
-	color: #0262b5;
+	color: #7a08d1;
 	text-align: center;
 	font: italic 30px arial, sans-serif;
 	margin: 0;
 }
 
 #game {
-	background: #7a08d1;
+	background: linear-gradient(to bottom right, #7a08d1, purple, indigo);
+	/* Shadow sourced from https://www.w3schools.com/css/css3_shadows.asp */
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	top: 5em;
-  margin-top: 60px;
+	margin-top: 60px;
 }
 
 #background {
-	background: #0262b5;
+	background: linear-gradient(to bottom, #0262b5, indigo);
 }
 
 #container {
@@ -47,4 +49,6 @@ button {
   border-radius: 8px;
   display: inline-block;
   font-size: 16px;
+	/* Shadow sourced from https://www.w3schools.com/css/css3_shadows.asp */
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
