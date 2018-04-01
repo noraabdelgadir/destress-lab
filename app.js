@@ -50,20 +50,26 @@ app.get('/music/bensound-thejazzpiano.mp3', (req, res) => {
     ms.pipe(req, res, './src/assets/music/bensound-thejazzpiano.mp3');
 });
 
-function getCollection(callback) {
+function getCollection(breeds, callback) {
     var promises = [];
     var images = [];
+    var queryUrl = 'http://dog.ceo/api/breeds/image/random';
+    console.log(breeds);
 
     // Make n request-promises that add the image url to images on success
     for(var i = 0; i < n; i++) {
-      var data = {
-        uri: 'http://dog.ceo/api/breeds/image/random',
-        qs: {},
-        json: true
-      };
-      promises.push(rp(data).then(function(img) {
-        images.push(img.message);
-      }));
+        if(breeds.length > 0) {
+            queryUrl =  "https://dog.ceo/api/breed/" + breeds[Math.round(Math.random() * (breeds.length - 1))] + "/images/random"
+        }
+        console.log(queryUrl);
+        var data = {
+            uri: queryUrl,
+            qs: {},
+            json: true
+        };
+        promises.push(rp(data).then(function(img) {
+            images.push(img.message);
+        }));
     }
 
     // Wait for all promises and call callback on success
@@ -75,7 +81,11 @@ function getCollection(callback) {
 }
 
 app.get('/game/pop/images', (req, res) => {
-    getCollection((images) => {
+    var breeds = [];
+    if(req.session.user) {
+        breeds = req.session.user.breeds;
+    }
+    getCollection(breeds, (images) => {
         res.send(JSON.stringify(images));
     });
 });
@@ -114,7 +124,7 @@ app.post('/user', (req, res) => {
                         if (err) throw err;
                         else {
                             console.log("User " + req.body.username + " created.");
-                            req.session.user = {id: returnUser._id, username: returnUser.username};
+                            req.session.user = {id: returnUser._id, username: returnUser.username, breeds: [], stressors: []};
                             res.status(201);
                             res.send(JSON.stringify({'breeds': [], 'stressors': []}));
                         }
@@ -247,20 +257,17 @@ app.post('/user/removeStressor', (req, res) => {
 /*  Protected pages */
 
 /*  Helper function to check authenticated user */
-function checkAuth(req, res) {
+function checkAuth(req) {
     if (!req.session.user) {
-        return res.status(401).send();
+        return False;
     }
-    return res.status(200).send();
+    return True;
 }
 
-app.get('/games/auth', checkAuth, (req, res) => {
-    res.sendFile('./src/pages/games.html', {root: __dirname});
+app.get('/user/stressors', (req, res) => {
+    res.status(200);
+    res.send(req.session.user.stressors);
 });
-
-app.put('/user/info', checkAuth, (req, res) => {
-
-})
 
 /*  Start server    */
 app.listen(PORT, () => {
