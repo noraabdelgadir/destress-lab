@@ -40,7 +40,7 @@
   .canvas {
   	position: absolute;
   	top: 0;
-  	left: 0;
+  	left: -90;
   }
 
   button {
@@ -52,7 +52,6 @@
     display: inline-block;
     font-size: 16px;
     float: left;
-
   }
   </style>
     <!-- jQuery library -->
@@ -67,10 +66,12 @@
     <audio controls style= "display: none" autoplay>
         <source src="/music/bensound-thejazzpiano.mp3"></source>
     </audio>
-    <h1>Stress Shooting</h1>
-    <button type='button'>Back</button>
-  </head>
 
+  </head>
+  <div style= "flex-direction: row;">
+    <button type='button'>Back</button>
+    <h1>Stress Shooting</h1>
+  </div>
   <div id='container' class='col-lg-8 col-centered'>
       <canvas class='canvas' id='background' width='1270' height='650'></canvas>
       <canvas class='canvas col-lg-6 col-lg-offset-4' id='game' width='500' height='500'></canvas>
