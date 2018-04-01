@@ -140,12 +140,12 @@ app.post('/user/login', (req, res) => {
                     res.status(200);
                     res.send(JSON.stringify({'breeds': user.breeds, 'stressors': user.stressors}));
                 } else {
-                    res.status(400);
+                    res.status(300);
                     res.send('Login failed.');
                 }
             });
         } else {
-            res.status(400);
+            res.status(300);
             res.send('Login failed.');
         }
     });
