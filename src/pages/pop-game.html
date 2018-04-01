@@ -1,39 +1,50 @@
 <html>
     <head>
-        <meta name="viewport" content="user-scalable=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
         <title>Pop!</title>
         <audio controls style="display: none" autoplay loop>
             <source src="/music/bensound-jazzcomedy.mp3"></source>
         </audio>
+        <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+        <!-- Bootstrap -->
+        <!-- Latest compiled and minified CSS -->
+        <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
+        <!-- Latest compiled JavaScript -->
+        <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
         <style>
-          h1 {
-            color: #0262b5;
-            text-align: center;
-            font: italic 30px arial, sans-serif;
-            margin: 0;
-          }
-          button {
-            background-color: #ff7ff9;
-            border: none;
-            color: black;
-            padding: 15px 32px;
-            border-radius: 8px;
-            display: inline-block;
-            font-size: 16px;
-            float: left;
-          }
+            body {
+                display: flex;
+                justify-content: center;
+            }
+            h1 {
+                position: absolute;
+                z-index: 1000;
+                display: flex;
+                color: #0262b5;
+                font: italic 20px arial, sans-serif;
+            }
+            button {
+                position: absolute;
+                z-index: 1000;
+                background-color: #ff7ff9;
+                border: none;
+                color: black;
+                padding: 10px 20px;
+                border-radius: 8px;
+                display: inline-block;
+                font-size: 16px;
+                top: 8%;
+            }
         </style>
     </head>
-    <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
-    <script type="text/css" src="../scripts/pop-game.css"></script>
-    <h1>Pop!<h1>
-    <button type='button'>Back</button>
     <body leftmargin='0' topmargin='0' rightmargin='0' bottommargin='0' marginwidth='0' marginheight='0' style="overflow:hidden">
+        <h1>Pop!</h1>
+        <button id='back'>Back</button>
         <canvas id='screen'></canvas>
     </body style="margin: 0;">
     <script type="text/javascript">
         'use strict';
-        $("button").on('click', function () {
+        $("#back").on('click', function () {
           location.href = "/";
         })
 

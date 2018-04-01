@@ -19,7 +19,6 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(session({secret: 'Secret cookie!'}));
 
-
 /*  Page loading    */
 app.get('/', (req, res) => {
     res.sendFile('./src/pages/home.html', {root: __dirname});
@@ -32,19 +31,6 @@ app.get('/images/grape.png', (req, res) => {
 app.get('/images/patrick.jpg', (req, res) => {
     ms.pipe(req, res, './src/assets/images/patrick.jpg');
 });
-
-// app.get('/login', (req, res) => {
-//     res.sendFile('./src/pages/login.html', {root: __dirname});
-// });
-//
-// app.get('/signup', (req, res) => {
-//     res.sendFile('./src/pages/signup.html', {root: __dirname});
-// });
-
-// app.get('/games', (req, res) => {
-//     // Check for session here
-//     res.sendFile('./src/pages/games.html', {root: __dirname});
-// });
 
 app.get('/game/pop', (req, res) => {
     res.sendFile('./src/pages/pop-game.html', {root: __dirname});
@@ -62,7 +48,6 @@ app.get('/music/bensound-jazzcomedy.mp3', (req, res) => {
 app.get('/music/bensound-thejazzpiano.mp3', (req, res) => {
     ms.pipe(req, res, './src/assets/music/bensound-thejazzpiano.mp3');
 });
-
 
 function getCollection(callback) {
     var promises = [];
@@ -122,13 +107,14 @@ app.post('/user', (req, res) => {
                 if (err) throw err;
                 else if (user) {
                     console.log('Username taken!');
-                    res.send({redirect: '/signup'});
+                    res.status(300);
                 } else {
                     User.create(newUser, (err, user) => {
                         if (err) throw err;
                         else {
                             console.log("User " + req.body.username + " created.");
-                            res.send({redirect: '/login'});
+                            res.status(201);
+                            res.send(JSON.stringify({'breeds': [], 'stressors': []}));
                         }
                     });
                 }
@@ -140,7 +126,7 @@ app.post('/user', (req, res) => {
 app.post('/user/login', (req, res) => {
     var username = req.body.username;
     var pwd = req.body.password;
-
+    console.log('looking for user on database');
     User.findOne({'username': username}, (err, user) => {
         if (err) throw err;
         else if (user) {
@@ -150,8 +136,9 @@ app.post('/user/login', (req, res) => {
                 if (bcryptRes) {
                     console.log("User " + username + " logged in.");
                     req.session.user = {id: user._id, username: username};
-                    res.send({redirect: '/games/auth'});
-                } else {
+                    res.status(200);
+                    res.send(JSON.stringify({'breeds': user.breeds, 'stressors': user.stressors}));
+                    } else {
                     console.log('Username or password incorrect.');
                 }
             });
@@ -161,20 +148,18 @@ app.post('/user/login', (req, res) => {
 
 app.get('/user/logout', (req, res) => {
     req.session.destroy (function() {
-        console.log("Logged out.");
-        res.sendFile('./src/pages/home.html', {root: __dirname});
+        res.status(204);
+        res.send('Logged out.');
     });
 });
 
 app.delete('/user', (req, res) => {
-    console.log('Removing user');
     User.remove({_id: req.session.user.id}, (err, data) => {
         if (err) throw err;
         else {
-            console.log(data);
             req.session.destroy (function() {
-                console.log("Logged out.");
-                res.send({redirect: '/'});
+                res.status(202);
+                res.send('Deleted account.');
             });
         }
     });
