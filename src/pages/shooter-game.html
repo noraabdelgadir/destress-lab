@@ -339,10 +339,11 @@
    */
   function addStress(stressors) {
       stresses = [];
-      if(stressors === null) {
+      if(!stressors) {
           stresses = defaultStresses;
       } else {
-          for(var i = 0; i < stresses.length; i++) {
+          for(var i = 0; i < stressors.length; i++) {
+              console.log(stressors[i])
               var randomX = Math.floor(Math.random() * gcanvas.width - 50) + 45;
               var randomY = Math.floor(Math.random() * gcanvas.height - 45) + 50;
               var speed = Math.floor(Math.random() * 3);
@@ -407,39 +408,29 @@
    *  The list of breeds to use for the images.
    */
   function addDog(n, breeds) {
-      if(breeds != null){
-          dogs = [];
-          for(var d = 0; d < n; d++) {
-              $.ajax({
-                  url: "https://dog.ceo/api/breed/" + breeds[d % breeds.length] + "/images/random",
-                  success: function(response) {
-                      var image = new Image();
-                      image.src = response.message;
-                      image.onload = function () {
-                          var randomX = Math.floor(Math.random() * bcanvas.width - 150) + 75;
-                          var randomY = Math.floor(Math.random() * bcanvas.height - 150) + 75;
-                          dogs.push({bx: randomX, by: randomY, bdx: ballSpeed, bdy: ballSpeed, image: image});
-                      };
-                  }
-              });
+      var dogImages = [];
+      var promise = new Promise ((resolve, reject) => {
+        $.get('/game/pop/images', (urlString, status) => {
+            if(urlString) {
+                var urls = JSON.parse(urlString);
+                for(var u in urls) {
+                    var dogImg = new Image();
+                    dogImg.src = urls[u];
+                    dogImages.push(dogImg);
+                }
+                resolve();
+            }
+        });
+      });
+      promise.then(() => {
+          console.log(dogImages[0]);
+          for(var d = 0; d < dogImages.length; d++) {
+                var randomX = Math.floor(Math.random() * bcanvas.width - 150) + 75;
+                var randomY = Math.floor(Math.random() * bcanvas.height - 150) + 75;
+                dogs.push({bx: randomX, by: randomY, bdx: ballSpeed, bdy: ballSpeed, image: dogImages[d]});
           }
-      } else {
-          dogs = [];
-          for(var d = 0; d < n; d++) {
-              $.ajax({
-                  url: "https://dog.ceo/api/breeds/image/random",
-                  success: function(response) {
-                      var image = new Image();
-                      image.src = response.message;
-                      image.onload = function () {
-                          var randomX = Math.floor(Math.random() * bcanvas.width - 150) + 75;
-                          var randomY = Math.floor(Math.random() * bcanvas.height - 150) + 75;
-                          dogs.push({bx: randomX, by: randomY, bdx: ballSpeed, bdy: ballSpeed, image: image});
-                      };
-                  }
-              });
-          }
-      }
+          console.log(dogs)
+      });
   }
 
   // Draws the dog
@@ -472,11 +463,24 @@
 
   // Loads the game based on stressors and breeds.
   function loadStuff() {
-      var stressors = window.parent.parent.currentStressors;
+      var stressors = [];
       var breeds = window.parent.parent.currentBreeds;
-      addStress(stressors);
-      addDog(count, breeds);
-      loaded = true;
+
+      var promise = new Promise ((resolve, reject) => {
+        $.get('/game/stressors', (data, status) => {
+            if(data) {
+                stressors = JSON.parse(data);
+                resolve();
+            }
+        });
+      });
+
+      promise.then(() => {
+        console.log(stressors);
+        addStress(stressors);
+        addDog(count, breeds);
+        loaded = true;
+      });
   }
 
   // Updates the canvas.

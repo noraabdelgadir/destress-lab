@@ -14,6 +14,11 @@ const request = require('request');
 const rp = require('request-promise');
 const n = 10;
 
+const presetStressors =
+    ['school', 'bills', 'osap loans', 'work', 'remark requests',
+    'csc373', 'job applications', 'vacuum cleaners', 'time', 'health',
+    'failure'];
+
 /*  Middleware  */
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
@@ -59,7 +64,7 @@ function getCollection(breeds, callback) {
     // Make n request-promises that add the image url to images on success
     for(var i = 0; i < n; i++) {
         if(breeds.length > 0) {
-            queryUrl =  "https://dog.ceo/api/breed/" + breeds[Math.round(Math.random() * (breeds.length - 1))] + "/images/random"
+            queryUrl = "https://dog.ceo/api/breed/" + breeds[Math.round(Math.random() * (breeds.length - 1))] + "/images/random"
         }
         console.log(queryUrl);
         var data = {
@@ -86,8 +91,19 @@ app.get('/game/pop/images', (req, res) => {
         breeds = req.session.user.breeds;
     }
     getCollection(breeds, (images) => {
+        console.log(images);
+        res.status(200);
         res.send(JSON.stringify(images));
     });
+});
+
+app.get('/game/stressors', (req, res) => {
+    var stressors = presetStressors;
+    if(req.session.user) {
+        stressors = req.session.user.stressors;
+    }
+    res.status(200);
+    res.send(JSON.stringify(stressors));
 });
 
 /*  RESTful User API    */
