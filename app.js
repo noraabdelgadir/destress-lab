@@ -106,8 +106,8 @@ app.post('/user', (req, res) => {
             User.findOne({'username': req.body.username}, (err, user) => {
                 if (err) throw err;
                 else if (user) {
-                    console.log('Username taken!');
                     res.status(300);
+                    res.send('Username taken.');
                 } else {
                     User.create(newUser, (err, returnUser) => {
                         if (err) throw err;
@@ -139,10 +139,14 @@ app.post('/user/login', (req, res) => {
                     req.session.user = {id: user._id, username: username};
                     res.status(200);
                     res.send(JSON.stringify({'breeds': user.breeds, 'stressors': user.stressors}));
-                    } else {
-                    console.log('Username or password incorrect.');
+                } else {
+                    res.status(400);
+                    res.send('Login failed.');
                 }
             });
+        } else {
+            res.status(400);
+            res.send('Login failed.');
         }
     });
 });
