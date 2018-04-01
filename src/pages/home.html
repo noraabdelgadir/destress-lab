@@ -118,6 +118,15 @@
         text-align: center;
       }
 
+      .shooter {
+          text-align: justify;
+          justify-content: center;
+      }
+      .pop {
+          /* text-align: justify; */
+          /* justify-content: center; */
+      }
+
       .scrollable {
         max-height: 200px;
         overflow-y: auto;
@@ -220,9 +229,30 @@
 
     <div id='main-screen'>
       <div id='game-panel-container' class='container'>
-        <img id='shooter-game' class='img-rounded select-panel' src='images/grape.png' alt='Grape' height='40%' width='40%' >
-        <img id='pop-game' class='img-rounded select-panel' src='images/patrick.jpg' alt='Patrick' height='40%' width='40%' >
+        <div id="shooter" class="row">
+          <div class="col-sm-6">
+            <img id='shooter-game' class='img-rounded select-panel'
+              src='images/grape.png' alt='Grape' height='40%' width='40%'>
+              <p style= "max-width: 320px; text-align: center;">
+                Use arrow keys to move and space to shoot.
+                If you don't want to use the bullets,
+                you can simply attack the stresses with the character.
+              </p>
+          </div>
+          <div class="col-sm-6">
+            <img id='pop-game' class='img-rounded select-panel'
+              src='images/patrick.jpg' alt='Patrick' height='40%' width='40%'>
+            <p style= "max-width: 300px; text-align: center;">
+              pOP THE BUBLES
+            </p>
+          </div>
+        </div>
+        </div>
+        <!-- <img id='pop-game' class='img-rounded select-panel' src='images/patrick.jpg' alt='Patrick' height='40%' width='40%' > -->
       </div>
+      <!-- <div id='instructions' style= 'position:absolute'>
+
+      </div> -->
     </div>
 
     <script type='text/javascript'>
