@@ -26,8 +26,6 @@
     <nav class='navbar navbar-light bg-light'>
       <div class='nav navbar-nav navbar-right'>
         <ul id='navbar-contents' class='nav navbar-nav'>
-          <li id='login'><a href='#' data-toggle='modal' data-target='#login-modal'>Log In</a></li>
-          <li id='signup'><a href='#' data-toggle='modal' data-target='#signup-modal'>Sign Up</a></li>
         </ul>
       </div>
     </nav>
@@ -140,89 +138,190 @@
     </style>
 
     <script type='text/javascript'>
-      var auth = false;
-      var navbarContents = $('#navbar-contents');
-      /**
-       * This will handle login during assignment 3 but for now it will
-       * print the username and password to console and allow a user
-       * to log in, regardless of correct credentials.
-       */
-      $('#login-modal #login-button').on('click', function () {
-          var username = $('#login-modal #username').val();
-          var password = $('#login-modal #login-pwd').val();
+      $(document).ready(function () {
+        var auth = false;
+        var navbarContents = $('#navbar-contents');
+        var signout = "<li id='signout'><a href='#' data-toggle='modal' data-target='#signout-modal'>Sign Out</a></li>";
+        var accSettings = "<li id='accsettings'><a href='#' data-toggle='modal' data-target='#settings-modal'>Account Settings</a></li>";
+        var backButton = "<li id='back'><a href='#'>Back</a></li>";
+        var login = "<li id='login'><a href='#' data-toggle='modal' data-target='#login-modal'>Log In</a></li>";
+        var signup = "<li id='signup'><a href='#' data-toggle='modal' data-target='#signup-modal'>Sign Up</a></li>";
+        var currentBreeds = [];
+        var currentStressors = [];
 
-          // Log it, in Assignment 3, we will send it to the server instead
-          console.log('username: ' + username);
-          console.log('password: ' + password);
+        /**
+         * Create the element representing that breed, add the remove button to it
+         */
+        function addBreed(newBreed) {
+          var item = document.createElement('div');
+          item.id = newBreed + '-wrapper';
+          item.classList = ['list-group-item'];
+          item.innerHTML = newBreed;
+          var icon1 = document.createElement('span');
+          icon1.id = newBreed.toLowerCase() + '-wrapper';
+          icon1.classList = ['pull-right'];
+          var icon2 = document.createElement('span');
+          icon2.id = 'remove-' + item.id;
+          icon2.classList = ['glyphicon  glyphicon-trash'];
+          icon1.append(icon2);
+          item.append(icon1);
+          $('#breed-pref').append(item);
+          $('#' + icon2.id).on('click',
+          function () {
+            $('#' + item.id).remove();
+            currentBreeds.splice(currentBreeds.indexOf(newBreed), 1);
+          });
+        }
 
-          // Will be replaced with proper authentication in Assignment 3
-          if (username === presetUser && password === presetPwd) {
-              loginSetup(username);
-          } else {
-              alert("Login failed.");
+        /**
+         * Create the element representing that stress, add the remove button to it
+         */
+        function addStress(newStressor) {
+          var item = document.createElement('div');
+          /*
+          The string functions applied below here are just in case the API changes
+          and allows for spacing in their names.
+          */
+          item.id = newStressor.toLowerCase().split(' ').join('-') + '-wrapper';
+          item.classList = ['list-group-item'];
+          item.innerHTML = newStressor;
+          var icon1 = document.createElement('span');
+          icon1.id = newStressor.toLowerCase() + '-wrapper';
+          icon1.classList = ['pull-right'];
+          var icon2 = document.createElement('span');
+          icon2.id = 'remove-' + item.id;
+          icon2.classList = ['glyphicon  glyphicon-trash'];
+          icon1.append(icon2);
+          item.append(icon1);
+          $('#stress-list').append(item);
+          $('#' + icon2.id).on('click',
+          function () {
+            $('#' + item.id).remove();
+            currentStressors.splice(currentStressors.indexOf(newStressor), 1);
+          });
+        }
+
+        /**
+         * Setup the buttons and breed/stressors for logged in user
+         */
+        function loginSetup(username, userData) {
+          $('#login').remove();
+          $('#signup').remove();
+          $('#navbar-contents').append(accSettings);
+          $('#navbar-contents').append(signout);
+
+          // This will be a fetch to backend user data in Assignment 3
+          currentBreeds = userData.breeds;
+          currentStressors = userData.stressors;
+
+          for(var i = 0; i < currentBreeds.length; i++) {
+              addBreed(currentBreeds[i]);
           }
+          for(var i = 0; i < currentStressors.length; i++) {
+              addStress(currentStressors[i]);
+          }
+
+          auth = true;
+        }
+
+        /**
+         * This will handle login during assignment 3 but for now it will
+         * print the username and password to console and allow a user
+         * to log in, regardless of correct credentials.
+         */
+        $('#login-modal #login-button').on('click', function () {
+            var username = $('#login-modal #username').val();
+            var password = $('#login-modal #login-pwd').val();
+
+            // Log it, in Assignment 3, we will send it to the server instead
+            console.log('username: ' + username);
+            console.log('password: ' + password);
+
+            $.post("/user/login", {username: username, password: password}, (data, status) => {
+              console.log(data)
+              loginSetup(username, JSON.parse(data));
+            });
+        });
+
+        /**
+         * Similar to login, a user can sign up without proper credentials,
+         * as long as the two passwords match.
+         */
+        $('#signup-modal #signup-button').on('click', function () {
+            var username = $('#signup-modal signup-username');
+            var pwd1 = $('#signup-modal #pwd').val();
+            var pwd2 = $('#signup-modal #re-enter').val();
+
+            // Log it, in Assignment 3, we will send it to the server instead
+            console.log('username: ' + $('#signup-modal #username').val());
+            console.log('password: ' + pwd1);
+            console.log('password: ' + pwd2);
+
+            if (pwd1 === pwd2) {
+              $.post("/user", {username: username, password: pwd1}, (data, status) => {
+                console.log(data)
+                loginSetup(username, JSON.parse(data));
+              });
+            } else {
+                alert('Sign up unsuccessful.');
+            }
+        });
+
+        /**
+         * Returns login and signup buttons to where they were and removes
+         * the sign out button.
+         */
+        $('#signout-modal #signout-button').on('click', function () {
+            var navbarContents = $('#navbar-contents');
+            $('#signout').remove();
+            $('#accsettings').remove();
+
+            // remove from account settings modal
+            var nodes = document.getElementById('breed-pref').childNodes;
+            var len = nodes.length;
+            for(var i = len - 1; i >= 0; i--) {
+                nodes[i].remove();
+            }
+            nodes = document.getElementById('stress-list').childNodes;
+            len = nodes.length;
+            for(var i = len - 1; i >= 0; i--) {
+                nodes[i].remove();
+            }
+
+            navbarContents.append(login);
+            navbarContents.append(signup);
+
+            currentBreeds = null;
+            currentStressors = null;
+
+            $.get('/user/logout', (data, status) => {
+              console.log(data);
+            });
+
+            auth = false;
+        });
+
+        $('#confirm-modal #c-delete-acc').on('click', function () {
+          console.log('delete')
+          $.ajax({
+              url: '/user',
+              type: 'DELETE',
+              success: (data, status) => {
+                console.log(data);
+              }
+          });
+        });
+
+        $('[data-toggle="popover"]').popover();
+
+        if(auth) {
+            navbarContents.append(accSettings);
+            navbarContents.append(signout);
+        } else {
+            navbarContents.append(login);
+            navbarContents.append(signup);
+        }
       });
-
-      /**
-       * Similar to login, a user can sign up without proper credentials,
-       * as long as the two passwords match.
-       */
-      $('#signup-modal #signup-button').on('click', function () {
-          var username = $('#signup-modal signup-username');
-          var pwd1 = $('#signup-modal #pwd').val();
-          var pwd2 = $('#signup-modal #re-enter').val();
-
-          // Log it, in Assignment 3, we will send it to the server instead
-          console.log('username: ' + $('#signup-modal #username').val());
-          console.log('password: ' + pwd1);
-          console.log('password: ' + pwd2);
-
-          if (pwd1 === pwd2) {
-              loginSetup(username);
-          } else {
-              alert('Sign up unsuccessful.');
-          }
-      });
-
-      /**
-       * Returns login and signup buttons to where they were and removes
-       * the sign out button.
-       */
-      $('#signout-modal #signout-button').on('click', function () {
-          var navbarContents = $('#navbar-contents');
-          $('#signout').remove();
-          $('#accsettings').remove();
-
-          // remove from account settings modal
-          var nodes = document.getElementById('breed-pref').childNodes;
-          var len = nodes.length;
-          for(var i = len - 1; i >= 0; i--) {
-              nodes[i].remove();
-          }
-          nodes = document.getElementById('stress-list').childNodes;
-          len = nodes.length;
-          for(var i = len - 1; i >= 0; i--) {
-              nodes[i].remove();
-          }
-
-          navbarContents.append(login);
-          navbarContents.append(signup);
-
-          currentBreeds = null;
-          currentStressors = null;
-
-          auth = false;
-      });
-
-      $('[data-toggle="popover"]').popover();
-
-      if(auth) {
-          navbarContents.append(accSettings);
-          navbarContents.append(signout);
-      } else {
-          navbarContents.append(login);
-          navbarContents.append(signup);
-      }
     </script>
 
     <h1> Welcome to the De-Stress Lab!</h1>
@@ -241,7 +340,7 @@
           </div>
           <div class="col-sm-6">
             <img id='pop-game' class='img-rounded select-panel'
-              src='images/patrick.jpg' alt='Patrick' height='40%' width='40%'>
+              src='images/pop.png' alt='Pop' height='40%' width='40%'>
             <p style= "max-width: 300px; text-align: center;">
               pOP THE BUBLES
             </p>
@@ -340,6 +439,7 @@
           <ul class='nav nav-tabs'>
             <li class='active'><a data-toggle='tab' href='#breed-tab'>Breed Preference</a></li>
             <li><a data-toggle='tab' href='#stress-tab'>Stress List</a></li>
+            <li><a data-toggle='tab' href='#delete-tab'>Delete</a></li>
           </ul>
         </div>
         <div class='modal-body'>
@@ -354,8 +454,24 @@
               <div class='list-group scrollable' id='stress-list'></div>
               <button id='add-stress' type='button' class='btn btn-default' data-toggle='modal' data-target='#addstress-modal'>Add</button>
             </div>
+            <div id='delete-tab' class='tab-pane fade'>
+              <h3>Delete Account</h3>
+              <button id='delete-acc' type='button' class='btn btn-default' data-toggle='modal' data-target='#confirm-modal'>Delete Account</button>
+            </div>
           </div>
         </div>
+    </div>
+  </div>
+
+  <div id='confirm-modal'class='modal fade'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <h2>Are you sure you would like to delete your account?</h2>
+      </div>
+      <div class='modal-footer'>
+        <button id='c-delete-acc' type='button' class='btn btn-default' data-dismiss='modal'>Yes</button>
+        <button type='button' class='btn btn-default' data-dismiss='modal'>No</button>
+      </div>
     </div>
   </div>
 

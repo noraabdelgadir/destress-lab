@@ -1,41 +1,59 @@
 <html>
     <head>
-        <meta name="viewport" content="user-scalable=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
         <title>Pop!</title>
-        <audio controls style="display: none" autoplay>
+        <audio controls style="display: none" autoplay loop>
             <source src="/music/bensound-jazzcomedy.mp3"></source>
         </audio>
+        <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+        <!-- Bootstrap -->
+        <!-- Latest compiled and minified CSS -->
+        <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
+        <!-- Latest compiled JavaScript -->
+        <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
         <style>
-          h1 {
-            color: #0262b5;
-            text-align: center;
-            font: italic 30px arial, sans-serif;
-            margin: 0;
-          }
-          button {
-            background-color: #ff7ff9;
-            border: none;
-            color: black;
-            padding: 15px 32px;
-            border-radius: 8px;
-            display: inline-block;
-            font-size: 16px;
-            float: left;
-          }
+            body {
+                display: flex;
+                justify-content: center;
+            }
+            h1 {
+                position: absolute;
+                z-index: 1000;
+                display: flex;
+                color: #0262b5;
+                font: italic 20px arial, sans-serif;
+            }
+            button {
+                position: absolute;
+                z-index: 1000;
+                background-color: #ff7ff9;
+                border: none;
+                color: black;
+                padding: 10px 20px;
+                border-radius: 8px;
+                display: inline-block;
+                font-size: 16px;
+                top: 8%;
+            }
         </style>
     </head>
+<<<<<<< HEAD
     <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
     <script type="text/css" src="../scripts/pop-game.css"></script>
     <div style= "flex-direction: row;">
       <button type='button'>Back</button>
       <h1>Pop!</h1>
     </div>
+=======
+>>>>>>> c13b0921cd5a60fdad4f4d699b01d8dd9f9b653a
     <body leftmargin='0' topmargin='0' rightmargin='0' bottommargin='0' marginwidth='0' marginheight='0' style="overflow:hidden">
+        <h1>Pop!</h1>
+        <button id='back'>Back</button>
         <canvas id='screen'></canvas>
     </body style="margin: 0;">
     <script type="text/javascript">
         'use strict';
-        $("button").on('click', function () {
+        $("#back").on('click', function () {
           location.href = "/";
         })
 
@@ -69,14 +87,14 @@
                     bubbleSpawner.spawnCounter === 0
                     && bubbleSpawner.bubbles.length < 8
                 ){
-                    var pr = screenHeight / 14; //potential radius of new bubble
+                    var pr = screenHeight / 10; //potential radius of new bubble
                     var variance = 30;
                     bubbleSpawner.spawn(
                         pr + Math.random() * (screenWidth - 2 * pr),
                         pr + Math.random() * (screenHeight - 2 * pr),
                         pr - variance + Math.random() * variance,
-                        Math.random() * 12,
-                        Math.random() * 12,
+                        Math.random() * 8,
+                        Math.random() * 8,
                         0
                     );
                     bubbleSpawner.spawnCounter = 20;
@@ -97,7 +115,19 @@
                 }
             },
             drawBubble: (b) => {
+                /*
+                Image cropping onto canvas from:
+                https://jsfiddle.net/jaredwilli/ex5n5/
+                */
                 var bubble = bubbleSpawner.bubbles[b];
+                ctx.strokeStyle = bubble.col;
+                ctx.fillStyle = bubble.col;
+                ctx.beginPath();
+                ctx.arc(bubble.x, bubble.y, bubble.r, 0, 2 * Math.PI);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.arc(bubble.x, bubble.y, bubble.r, 0, 2 * Math.PI);
+                ctx.fill();
                 ctx.save();
                 ctx.beginPath();
                 ctx.arc(bubble.x, bubble.y, bubble.r, 0, Math.PI * 2, true);
@@ -110,10 +140,6 @@
                 ctx.clip();
                 ctx.closePath();
                 ctx.restore();
-                ctx.strokeStyle = bubble.col;
-                ctx.beginPath();
-                ctx.arc(bubble.x, bubble.y, bubble.r, 0, 2 * Math.PI);
-                ctx.stroke();
             },
             handlePop: (x, y) => {
                 for (var b in bubbleSpawner.bubbles) {
