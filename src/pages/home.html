@@ -223,23 +223,46 @@
           auth = true;
         }
 
+        function logoutSetup() {
+          $('#signout').remove();
+          $('#accsettings').remove();
+
+          // remove from account settings modal
+          var nodes = document.getElementById('breed-pref').childNodes;
+          var len = nodes.length;
+          for(var i = len - 1; i >= 0; i--) {
+            nodes[i].remove();
+          }
+          nodes = document.getElementById('stress-list').childNodes;
+          len = nodes.length;
+          for(var i = len - 1; i >= 0; i--) {
+            nodes[i].remove();
+          }
+
+          navbarContents.append(login);
+          navbarContents.append(signup);
+
+          currentBreeds = null;
+          currentStressors = null;
+        }
+
         /**
          * This will handle login during assignment 3 but for now it will
          * print the username and password to console and allow a user
          * to log in, regardless of correct credentials.
          */
         $('#login-modal #login-button').on('click', function () {
-            var username = $('#login-modal #username').val();
-            var password = $('#login-modal #login-pwd').val();
+          var username = $('#login-modal #username').val();
+          var password = $('#login-modal #login-pwd').val();
 
-            // Log it, in Assignment 3, we will send it to the server instead
-            console.log('username: ' + username);
-            console.log('password: ' + password);
+          // Log it, in Assignment 3, we will send it to the server instead
+          console.log('username: ' + username);
+          console.log('password: ' + password);
 
-            $.post("/user/login", {username: username, password: password}, (data, status) => {
-              console.log(data)
-              loginSetup(username, JSON.parse(data));
-            });
+          $.post("/user/login", {username: username, password: password}, (data, status) => {
+            console.log(data)
+            loginSetup(username, JSON.parse(data));
+          });
         });
 
         /**
@@ -247,23 +270,23 @@
          * as long as the two passwords match.
          */
         $('#signup-modal #signup-button').on('click', function () {
-            var username = $('#signup-modal signup-username');
-            var pwd1 = $('#signup-modal #pwd').val();
-            var pwd2 = $('#signup-modal #re-enter').val();
+          var username = $('#signup-modal #signup-username').val();
+          var pwd1 = $('#signup-modal #pwd').val();
+          var pwd2 = $('#signup-modal #re-enter').val();
 
-            // Log it, in Assignment 3, we will send it to the server instead
-            console.log('username: ' + $('#signup-modal #username').val());
-            console.log('password: ' + pwd1);
-            console.log('password: ' + pwd2);
+          // Log it, in Assignment 3, we will send it to the server instead
+          console.log('username: ' + username);
+          console.log('password: ' + pwd1);
+          console.log('password: ' + pwd2);
 
-            if (pwd1 === pwd2) {
-              $.post("/user", {username: username, password: pwd1}, (data, status) => {
-                console.log(data)
-                loginSetup(username, JSON.parse(data));
-              });
-            } else {
-                alert('Sign up unsuccessful.');
-            }
+          if (pwd1 === pwd2) {
+            $.post("/user", {username: username, password: pwd1}, (data, status) => {
+              console.log(data)
+              loginSetup(username, JSON.parse(data));
+            });
+          } else {
+              alert('Sign up unsuccessful.');
+          }
         });
 
         /**
@@ -271,54 +294,35 @@
          * the sign out button.
          */
         $('#signout-modal #signout-button').on('click', function () {
-            var navbarContents = $('#navbar-contents');
-            $('#signout').remove();
-            $('#accsettings').remove();
-
-            // remove from account settings modal
-            var nodes = document.getElementById('breed-pref').childNodes;
-            var len = nodes.length;
-            for(var i = len - 1; i >= 0; i--) {
-                nodes[i].remove();
-            }
-            nodes = document.getElementById('stress-list').childNodes;
-            len = nodes.length;
-            for(var i = len - 1; i >= 0; i--) {
-                nodes[i].remove();
-            }
-
-            navbarContents.append(login);
-            navbarContents.append(signup);
-
-            currentBreeds = null;
-            currentStressors = null;
-
-            $.get('/user/logout', (data, status) => {
-              console.log(data);
-            });
-
-            auth = false;
+          var navbarContents = $('#navbar-contents');
+          $.get('/user/logout', (data, status) => {
+            console.log(data);
+          });
+          logoutSetup();
+          auth = false;
         });
 
         $('#confirm-modal #c-delete-acc').on('click', function () {
           console.log('delete')
           $.ajax({
-              url: '/user',
-              type: 'DELETE',
-              success: (data, status) => {
-                console.log(data);
-              }
+            url: '/user',
+            type: 'DELETE',
+            success: (data, status) => {
+              console.log(data);
+            }
           });
+          logoutSetup();
+          auth = false;
         });
 
         $('[data-toggle="popover"]').popover();
 
         if(auth) {
-            navbarContents.append(accSettings);
-            navbarContents.append(signout);
+          navbarContents.append(accSettings);
+          navbarContents.append(signout);
         } else {
-            navbarContents.append(login);
-            navbarContents.append(signup);
+          navbarContents.append(login);
+          navbarContents.append(signup);
         }
       });
     </script>

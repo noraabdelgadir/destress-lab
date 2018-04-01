@@ -109,10 +109,11 @@ app.post('/user', (req, res) => {
                     console.log('Username taken!');
                     res.status(300);
                 } else {
-                    User.create(newUser, (err, user) => {
+                    User.create(newUser, (err, returnUser) => {
                         if (err) throw err;
                         else {
                             console.log("User " + req.body.username + " created.");
+                            req.session.user = {id: returnUser._id, username: returnUser.username};
                             res.status(201);
                             res.send(JSON.stringify({'breeds': [], 'stressors': []}));
                         }
