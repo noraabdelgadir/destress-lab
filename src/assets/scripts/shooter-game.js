@@ -2,7 +2,7 @@
 
 var loaded = false;
 $("button").on('click', function () {
-location.href = "/";
+    location.href = "/";
 })
 /* variable declarations */
 
@@ -47,6 +47,10 @@ var shooting = false;
 
 // stresses that are defeated count
 var defeated = 0;
+
+// if the user has no stresses
+var defaultStresses = [{name: "work", x: 400, y: 30, dx: dx - 2, dy, show: true},
+  {name: "project", x: 50, y: 90, dx, dy, show: true}];
 
 // check if user is logged in
 var authCheck = false;
