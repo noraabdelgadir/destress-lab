@@ -97,6 +97,15 @@ app.get('/game/pop/images', (req, res) => {
     });
 });
 
+app.get('/game/breeds', (req, res) => {
+    var breeds = [];
+    if(req.session.user) {
+        breeds = req.session.user.breeds;
+    }
+    res.status(200);
+    res.send(JSON.stringify(breeds));
+});
+
 app.get('/game/stressors', (req, res) => {
     var stressors = presetStressors;
     if(req.session.user) {
@@ -279,6 +288,14 @@ function checkAuth(req) {
     }
     return True;
 }
+
+app.get('/user/isauth', (req, res) => {
+    if(req.session.user) {
+        res.send(JSON.stringify(true));
+    } else {
+        res.send(JSON.stringify(false));
+    }
+});
 
 app.get('/user/stressors', (req, res) => {
     res.status(200);
