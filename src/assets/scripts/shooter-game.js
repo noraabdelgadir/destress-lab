@@ -1,5 +1,5 @@
 "use strict";
-
+var stresses = [];
 var loaded = false;
 $("button").on('click', function () {
     location.href = "/";
