@@ -1,11 +1,9 @@
 # Assignment #3: The De-Stress Lab
 
 ## Members
-Nora Abdelgadir - abdelg19
-
-Marie Merci Ishimwe - ishimwem
-
-Alison Tong - tongalis
+- Nora Abdelgadir
+- Marie Merci Ishimwe
+- Alison Tong
 
 ## To run
 Go to Heroku link http://de-stress-lab.herokuapp.com/ or:
