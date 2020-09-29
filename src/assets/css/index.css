@@ -19,13 +19,12 @@ body {
 }
 
 .container {
-  display: flex;
   justify-content: center;
 }
 
 #game-panel-container {
   overflow: visible;
-  display: flex;
+
 }
 
 #main-screen {
